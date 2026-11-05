@@ -38,14 +38,14 @@ async function autofill() {
     await finish()
   }
   catch (err) {
-    if (!isPasskeyCancel(err) && (err as { name?: string })?.name !== 'NotSupportedError') error.value = errorText(err, t('login.passkeyFailed'))
+    if (!isPasskeyCancel(err)) error.value = errorText(err, t('login.passkeyFailed'))
   }
 }
 
 onMounted(() => {
   local.value = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
   canPasskey.value = passkey.supported()
-  if (canPasskey.value) autofill()
+  if (canPasskey.value && step.value === 'email') autofill()
 })
 
 onBeforeUnmount(() => passkey.cancel())
