@@ -1,0 +1,1 @@
+UPDATE "mails" AS s SET "sent_at" = o."sent_at", "to_addr" = coalesce(s."to_addr", o."to_addr") FROM "mails" AS o WHERE s."direction" = 'in' AND s."message_id" IS NULL AND s."sent_at" IS NULL AND s."in_reply_to" IS NOT NULL AND o."project_id" = s."project_id" AND o."direction" = 'in' AND o."message_id" = s."in_reply_to" AND o."sent_at" IS NOT NULL;

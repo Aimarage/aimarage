@@ -1,0 +1,38 @@
+name: aimarage
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: aimarage
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD in .env setzen}
+      POSTGRES_DB: aimarage
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aimarage -d aimarage"]
+      interval: 5s
+      retries: 20
+
+  app:
+    build: .
+    image: aimarage:local
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    environment:
+      HOSTED: "false"
+      DATABASE_URL: postgres://aimarage:${POSTGRES_PASSWORD}@db:5432/aimarage
+      WORKER_INLINE: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - appdata:/app/data
+    ports:
+      - "127.0.0.1:${AIMARAGE_PORT:-3210}:3000"
+
+volumes:
+  pgdata:
+  appdata:

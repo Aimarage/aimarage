@@ -1,0 +1,83 @@
+<script setup lang="ts">
+const { t } = useI18n()
+const route = useRoute()
+const lang = computed(() => (route.query.lang === 'en' ? 'en' : 'de'))
+</script>
+
+<template>
+  <div class="shell">
+    <header class="top">
+      <NuxtLink :to="{ path: '/hilfe', query: lang === 'en' ? { lang: 'en' } : {} }" class="brand">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="5" fill="none" stroke="var(--line2)" /><path d="M5 15 L9 9 L12.5 12.5 L17 6" fill="none" stroke="var(--agent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /><circle cx="17" cy="6" r="1.8" fill="var(--agent)" /></svg>
+        Aimarage
+      </NuxtLink>
+      <nav class="right" :aria-label="t('help.lang')">
+        <NuxtLink :to="{ path: route.path, query: {} }" :aria-current="lang === 'de' ? 'true' : undefined" class="lang" hreflang="de">DE</NuxtLink>
+        <NuxtLink :to="{ path: route.path, query: { lang: 'en' } }" :aria-current="lang === 'en' ? 'true' : undefined" class="lang" hreflang="en">EN</NuxtLink>
+        <NuxtLink to="/login" class="btn">{{ t('help.login') }}</NuxtLink>
+      </nav>
+    </header>
+    <main class="main">
+      <slot />
+    </main>
+  </div>
+</template>
+
+<style scoped>
+.shell {
+  min-height: 100vh;
+  background: var(--main);
+  color: var(--text);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--chrome);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.lang {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--dim);
+  text-decoration: none;
+}
+
+.lang[aria-current] {
+  color: var(--text);
+}
+
+.main {
+  padding: 44px 32px 72px;
+}
+
+@media (max-width: 600px) {
+  .top {
+    padding: 10px 16px;
+  }
+
+  .main {
+    padding: 28px 16px 56px;
+  }
+}
+</style>

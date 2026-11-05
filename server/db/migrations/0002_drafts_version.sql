@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "drafts_task_version_uq" ON "drafts" USING btree ("task_id","version");

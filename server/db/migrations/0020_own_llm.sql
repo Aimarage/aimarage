@@ -1,0 +1,1 @@
+ALTER TABLE "agent_runs" ADD COLUMN "own_cost_eur" numeric DEFAULT 0 NOT NULL;

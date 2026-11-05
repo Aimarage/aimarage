@@ -1,0 +1,63 @@
+{
+  "name": "aimarage",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Aimarage - AI marketing agent for small teams, self-hosted (fair code)",
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "node": ">=22.22"
+  },
+  "scripts": {
+    "dev": "nuxt dev --port 3210",
+    "build": "nuxt build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "worker": "node --env-file-if-exists=.env --import tsx worker/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts",
+    "storage:migrate": "node --env-file-if-exists=.env --import tsx scripts/storage-migrate.ts",
+    "test": "vitest run",
+    "test:api": "nuxt build && vitest run --config vitest.api.config.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.128.0",
+    "@electric-sql/pglite": "^0.5.8",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@nuxtjs/i18n": "^10.6.0",
+    "@simplewebauthn/browser": "^14.0.0",
+    "@simplewebauthn/server": "^14.0.3",
+    "archiver": "^7.0.1",
+    "aws4fetch": "^1.0.20",
+    "croner": "^10.0.1",
+    "drizzle-orm": "^0.45.3",
+    "imapflow": "^2.2.7",
+    "mailparser": "^3.9.36",
+    "mammoth": "^1.13.0",
+    "nodemailer": "^10.0.16",
+    "nuxt": "^4.6.0",
+    "pg": "^8.23.1",
+    "read-excel-file": "^9.3.12",
+    "tsx": "^4.23.15",
+    "unpdf": "^1.8.1",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/archiver": "^8.0.0",
+    "@types/mailparser": "^3.9.0",
+    "@types/node": "^24.19.1",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.11",
+    "playwright": "1.63",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3",
+    "vue-tsc": "^3.3.12"
+  },
+  "author": "Dr. Peter Mayer, Webservice Mayer"
+}
