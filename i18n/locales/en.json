@@ -813,7 +813,7 @@
       "member": "Member",
       "viewer": "Read only"
     },
-    "membersLater": "Inviting people and changing roles comes with the team expansion.",
+    "membersSingle": "This installation has one account.",
     "mailTitle": "System emails",
     "mailHint": "Aimarage sends sign-in codes and notices to the account address. The test email goes to your address.",
     "mailTest": "Send a test email to me",

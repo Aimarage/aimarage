@@ -813,7 +813,7 @@
       "member": "Mitglied",
       "viewer": "Nur lesen"
     },
-    "membersLater": "Einladen und Rollen ändern kommt mit dem Team-Ausbau.",
+    "membersSingle": "Diese Installation hat ein Konto.",
     "mailTitle": "Systemmails",
     "mailHint": "Anmeldecodes und Hinweise schickt Aimarage an die Adresse des Kontos. Die Testmail geht an deine Adresse.",
     "mailTest": "Testmail an mich senden",

@@ -161,7 +161,7 @@ describe('Aimarage-Hilfe: Hilfeseite', () => {
       const agent = helpDoc(lang).sections.map(x => x.body).join('\n')
       for (const x of secrets) expect(pub, x).not.toContain(x)
       expect(agent).not.toContain('Intern:')
-      for (const x of lang === 'de' ? ['in Vorbereitung', '20 Ablehnungen', '5 USD je 1000'] : ['in preparation', '20 rejections', '5 USD per 1000']) expect(agent).toContain(x)
+      for (const x of lang === 'de' ? [...(config.hosted ? ['in Vorbereitung'] : []), '20 Ablehnungen', '5 USD je 1000'] : [...(config.hosted ? ['in preparation'] : []), '20 rejections', '5 USD per 1000']) expect(agent).toContain(x)
       expect(publicHelpDoc(lang).sections.length).toBe(helpDoc(lang).sections.length)
     }
   })

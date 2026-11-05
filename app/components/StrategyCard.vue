@@ -17,10 +17,12 @@ const toast = useToast()
 const { data, refresh } = useFetch<StrategyDetail>(() => `/api/strategies/${props.id}`, { key: computed(() => `strategy:${props.id}`) })
 const busy = ref(false)
 const done = ref<{ action: 'approve' | 'reject', created: number, slug: string } | null>(null)
-const channels = ref<StrategyChannel[]>([])
-watchEffect(() => {
-  if (data.value) channels.value = data.value.strategy.channels.map(c => ({ ...c }))
+const edited = ref<StrategyChannel[] | null>(null)
+const channels = computed<StrategyChannel[]>({
+  get: () => edited.value ?? data.value?.strategy.channels ?? [],
+  set: v => { edited.value = v },
 })
+watch(data, () => { edited.value = null })
 const isInitial = computed(() => data.value?.strategy.kind === 'initial' || !data.value?.strategy.changes.length)
 const dirty = computed(() => JSON.stringify(channels.value) !== JSON.stringify(data.value?.strategy.channels ?? []))
 

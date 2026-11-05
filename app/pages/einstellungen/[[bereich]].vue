@@ -419,7 +419,7 @@ async function saveWs() {
           <span class="pill">{{ t(`settings.role.${m.role}`) }}</span>
         </li>
       </ul>
-      <p class="hint pad">{{ t('settings.membersLater') }}</p>
+      <p class="hint pad">{{ t('settings.membersSingle') }}</p>
     </section>
 
     <component :is="item.component" v-if="item?.component" />

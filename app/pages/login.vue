@@ -38,7 +38,7 @@ async function autofill() {
     await finish()
   }
   catch (err) {
-    if (!isPasskeyCancel(err)) error.value = errorText(err, t('login.passkeyFailed'))
+    if (!isPasskeyCancel(err) && (err as { name?: string })?.name !== 'NotSupportedError') error.value = errorText(err, t('login.passkeyFailed'))
   }
 }
 
