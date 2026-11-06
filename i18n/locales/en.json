@@ -1026,9 +1026,9 @@
       },
       "guide": {
         "aimarage": [
-          "Your website needs the Aimarage Blog API (developer guide: docs/blog-api.md).",
+          "Your website needs the Aimarage Blog API, e.g. the small PHP blog aimarage-blog: https://github.com/Aimarage/aimarage-blog",
           "Create a long random token, store only its SHA-256 hash on the server and enter the token here.",
-          "Enter the API address, e.g. https://your-site.com/api/guides. All languages your website offers are published, others are skipped. Discarding a published task withdraws the article."
+          "Enter the API address, e.g. https://your-site.com/blog/api. All languages your website offers are published, others are skipped. Discarding a published task withdraws the article."
         ],
         "wordpress": [
           "Log in to WordPress, go to Users > Profile.",

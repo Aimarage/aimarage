@@ -1026,9 +1026,9 @@
       },
       "guide": {
         "aimarage": [
-          "Deine Website braucht die Aimarage-Blog-API (Anleitung für Entwickler: docs/blog-api.md).",
+          "Deine Website braucht die Aimarage-Blog-API, z.B. das kleine PHP-Blog aimarage-blog: https://github.com/Aimarage/aimarage-blog",
           "Einen langen Zufalls-Token erzeugen, auf dem Server nur seinen SHA-256-Hash hinterlegen und den Token hier eintragen.",
-          "Adresse der Schnittstelle eintragen, z.B. https://deine-seite.at/api/guides. Veröffentlicht werden alle Sprachen, die deine Website anbietet, die übrigen werden übersprungen. Verwirfst du eine veröffentlichte Aufgabe, wird der Artikel zurückgezogen."
+          "Adresse der Schnittstelle eintragen, z.B. https://deine-seite.at/blog/api. Veröffentlicht werden alle Sprachen, die deine Website anbietet, die übrigen werden übersprungen. Verwirfst du eine veröffentlichte Aufgabe, wird der Artikel zurückgezogen."
         ],
         "wordpress": [
           "In WordPress anmelden, links auf Benutzer > Profil.",
