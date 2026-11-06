@@ -6,6 +6,12 @@
 
 Aimarage is an AI marketing agent for small teams. Per project it plans goals, strategy and channels, puts tasks in a calendar, writes drafts every day (posts, articles, replies) and evaluates results. You review and approve. It only posts or sends through accounts you connect yourself, and only with the main switch turned on.
 
+### What it does
+
+- SEO check every Monday on up to 30 pages of your website: broken links, titles, meta descriptions, headings, alt texts, thin content, hreflang, canonical, load time. Each kind of finding becomes a task with a ready-to-copy brief, e.g. for Claude Code via MCP.
+- Reports with search numbers (Google Search Console, Bing Webmaster Tools), visitors per source (UTM) and AI visibility: is your project named when AI models are asked typical questions?
+- Publishes approved articles to your website: via its own small PHP blog [aimarage-blog](https://github.com/Aimarage/aimarage-blog), WordPress, Webflow or Git (Markdown with frontmatter for static sites like Astro or Hugo, on GitHub or GitLab).
+
 This is the self-hosted edition for your own use: one workspace, one sign-in, you run it on your computer or server and enter all keys yourself. Prefer not to run anything? The hosted version with all services included is at https://aimarage.com.
 
 ### Install with Docker Compose
@@ -29,7 +35,9 @@ Aimarage only listens on `127.0.0.1`. For access from outside, put a reverse pro
 | Service | Used for | Where |
 |---|---|---|
 | Anthropic or another OpenAI-compatible AI provider | Agent, drafts, strategy (required) | Settings > AI, or `LLM_*` in `.env` |
-| Brave Search API | Web search: threads, mentions, directories (optional) | Settings > Platform access |
+| Brave Search API | Web search: threads, mentions, directories, web results for AI visibility (optional) | Settings > Platform access |
+| Google Search Console (own Google app), Bing Webmaster Tools | Search numbers in reports (optional) | Settings > Platform access |
+| Blog: aimarage-blog token, WordPress, Webflow or GitHub/GitLab token | Publishing articles (optional) | Project > Settings > Publish articles |
 | Zernio or Upload-Post | Posting to Instagram, Facebook, LinkedIn, X, TikTok, YouTube (optional) | Project > Accounts, or `ZERNIO_API_KEY` |
 | Your own platform apps (Meta, LinkedIn, X, Google ...) | Connect directly instead of via Zernio (optional) | Settings > Platform access |
 | Bluesky, Mastodon, Telegram | Posting (optional) | Project > Accounts |
@@ -50,6 +58,12 @@ Aimarage is fair code, not open source, under the [Sustainable Use License](LICE
 ## Deutsch
 
 Aimarage ist ein KI-Marketing-Agent für kleine Teams: Er plant je Projekt Ziele, Strategie und Kanäle, legt Aufgaben in den Kalender, schreibt jeden Tag Entwürfe und wertet Ergebnisse aus. Du prüfst und gibst frei.
+
+Was es kann:
+
+- SEO-Prüfung jeden Montag auf höchstens 30 Seiten der Website: kaputte Links, Seitentitel, Meta-Beschreibung, Überschriften, alt-Texte, wenig Text, hreflang, Canonical, Ladezeit. Jede Fund-Art wird eine Aufgabe mit kopierfertigem Auftrag, z.B. für Claude Code über MCP.
+- Berichte mit Suche (Google Search Console, Bing Webmaster Tools), Besuchern je Quelle (UTM) und KI-Sichtbarkeit: Wird dein Projekt genannt, wenn man KI-Modellen typische Fragen stellt?
+- Veröffentlicht freigegebene Artikel auf der Website: über das eigene kleine PHP-Blog [aimarage-blog](https://github.com/Aimarage/aimarage-blog), WordPress, Webflow oder Git (Markdown mit Frontmatter für statische Seiten wie Astro oder Hugo, auf GitHub oder GitLab).
 
 Diese Version ist zum Selbst-Installieren für den Eigengebrauch: ein Arbeitsbereich, eine Anmeldung, alle Schlüssel trägst du selbst ein. Die gehostete Version mit allen Diensten gibt es unter https://aimarage.com.
 
