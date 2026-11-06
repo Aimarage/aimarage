@@ -12,6 +12,17 @@ Aimarage is an AI marketing agent for small teams. Per project it plans goals, s
 - Reports with search numbers (Google Search Console, Bing Webmaster Tools), visitors per source (UTM) and AI visibility: is your project named when AI models are asked typical questions?
 - Publishes approved articles to your website: via its own small PHP blog [aimarage-blog](https://github.com/Aimarage/aimarage-blog), WordPress, Webflow or Git (Markdown with frontmatter for static sites like Astro or Hugo, on GitHub or GitLab).
 
+![Dashboard: what is due today, what the AI did since yesterday, numbers and goals](screens/dashboard-en.webp)
+
+| | |
+|---|---|
+| ![Approvals: the original post on top, the draft reply below](screens/freigabe-en.webp) | ![Strategy: goals, channels and cadence](screens/strategie-en.webp) |
+| Approvals: the post we reply to, and the draft | Strategy: goals, channels and cadence |
+| ![Reports: visitors per source and the weekly SEO check](screens/berichte-en.webp) | |
+| Reports: visitors per source and SEO check | |
+
+The screenshots show a made-up demo project.
+
 This is the self-hosted edition for your own use: one workspace, one sign-in, you run it on your computer or server and enter all keys yourself. Prefer not to run anything? The hosted version with all services included is at https://aimarage.com.
 
 ### Install with Docker Compose
@@ -64,6 +75,17 @@ Was es kann:
 - SEO-Prüfung jeden Montag auf höchstens 30 Seiten der Website: kaputte Links, Seitentitel, Meta-Beschreibung, Überschriften, alt-Texte, wenig Text, hreflang, Canonical, Ladezeit. Jede Fund-Art wird eine Aufgabe mit kopierfertigem Auftrag, z.B. für Claude Code über MCP.
 - Berichte mit Suche (Google Search Console, Bing Webmaster Tools), Besuchern je Quelle (UTM) und KI-Sichtbarkeit: Wird dein Projekt genannt, wenn man KI-Modellen typische Fragen stellt?
 - Veröffentlicht freigegebene Artikel auf der Website: über das eigene kleine PHP-Blog [aimarage-blog](https://github.com/Aimarage/aimarage-blog), WordPress, Webflow oder Git (Markdown mit Frontmatter für statische Seiten wie Astro oder Hugo, auf GitHub oder GitLab).
+
+![Dashboard: was heute ansteht, was die KI seit gestern gemacht hat, Kennzahlen und Ziele](screens/dashboard-de.webp)
+
+| | |
+|---|---|
+| ![Freigaben: oben der Originalbeitrag, darunter der Antwortentwurf](screens/freigabe-de.webp) | ![Strategie: Ziele, Kanäle und Takt](screens/strategie-de.webp) |
+| Freigaben: der Beitrag, auf den wir antworten, und der Entwurf | Strategie: Ziele, Kanäle und Takt |
+| ![Berichte: Besucher je Quelle und die wöchentliche SEO-Prüfung](screens/berichte-de.webp) | |
+| Berichte: Besucher je Quelle und SEO-Prüfung | |
+
+Die Screenshots zeigen ein erfundenes Demo-Projekt.
 
 Diese Version ist zum Selbst-Installieren für den Eigengebrauch: ein Arbeitsbereich, eine Anmeldung, alle Schlüssel trägst du selbst ein. Die gehostete Version mit allen Diensten gibt es unter https://aimarage.com.
 
