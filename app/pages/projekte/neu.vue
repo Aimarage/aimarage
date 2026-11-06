@@ -166,7 +166,7 @@ const canNext1 = computed(() => form.value.url.trim().length > 3)
       <p v-else-if="!boot?.agent.ready" class="hint">{{ t('onboarding.noAgent') }} <NuxtLink to="/einstellungen/ki">{{ t('chat.setupAccess') }}</NuxtLink></p>
 
       <form v-if="step === 1" class="panel panel-body stack" @submit.prevent="step = 2">
-        <label class="field"><span>{{ t('onboarding.url') }}</span><input v-model="form.url" class="input" inputmode="url" placeholder="tonebase.com" required autofocus></label>
+        <label class="field"><span>{{ t('onboarding.url') }}</span><input v-model="form.url" class="input" inputmode="url" placeholder="example.com" required autofocus></label>
         <label class="field"><span>{{ t('onboarding.what') }}</span><textarea v-model="form.description" class="textarea" rows="3" :placeholder="t('onboarding.whatPh')" maxlength="2000" /></label>
         <details class="opt"><summary>{{ t('onboarding.nameOpt') }}</summary><label class="field"><span>{{ t('project.name') }}</span><input v-model="form.name" class="input" maxlength="60"></label></details>
         <div class="form-actions"><button type="submit" class="btn primary" :disabled="!canNext1">{{ t('onboarding.next') }}</button></div>
