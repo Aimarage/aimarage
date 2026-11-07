@@ -163,7 +163,7 @@ function statLine(key: string) {
 }
 
 .d.on {
-  background: var(--agent);
+  background: var(--primary);
 }
 
 .chev {
@@ -210,7 +210,7 @@ function statLine(key: string) {
 .chip {
   height: 26px;
   padding: 0 10px;
-  border-radius: 13px;
+  border-radius: 3px;
   border: 1px solid var(--line2);
   background: var(--panel);
   color: var(--muted);
@@ -219,9 +219,10 @@ function statLine(key: string) {
 }
 
 .chip[aria-pressed='true'] {
-  border-color: var(--agent);
-  color: var(--agent);
-  background: var(--agent-soft);
+  border-color: var(--marker);
+  color: var(--on-marker);
+  background: var(--marker);
+  font-weight: 700;
 }
 
 .acts {
@@ -280,7 +281,7 @@ function statLine(key: string) {
 }
 
 .nx:hover {
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .nx .mono {

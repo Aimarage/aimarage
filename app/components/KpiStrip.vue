@@ -16,7 +16,7 @@ const { t } = useI18n()
 // Kacheln ohne eine einzige Zahl in den letzten 14 Tagen erst zeigen, wenn es Daten gibt.
 const cards = computed(() => props.kpis.filter(k => k.series.some(v => v !== null)).map((k) => {
   const p = projectById(k.projectId)
-  return { ...k, color: p ? `var(--c-${p.color})` : 'var(--agent)', title: props.all ? p?.name ?? k.label : k.label, sub: props.all ? (k.key === 'visitors' ? t('dash.visitorsYesterday') : `${k.label} ${t('dash.yesterday')}`) : t('dash.yesterday') }
+  return { ...k, color: p ? `var(--c-${p.color})` : 'var(--primary)', title: props.all ? p?.name ?? k.label : k.label, sub: props.all ? (k.key === 'visitors' ? t('dash.visitorsYesterday') : `${k.label} ${t('dash.yesterday')}`) : t('dash.yesterday') }
 }))
 </script>
 
@@ -46,7 +46,7 @@ const cards = computed(() => props.kpis.filter(k => k.series.some(v => v !== nul
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
   margin-bottom: 8px;
 }
@@ -55,7 +55,7 @@ const cards = computed(() => props.kpis.filter(k => k.series.some(v => v !== nul
   background: var(--panel);
   padding: 22px 24px;
   min-width: 0;
-  border-top: 2px solid var(--agent);
+  border-top: 2px solid var(--primary);
   color: var(--text);
   text-decoration: none;
 }
@@ -93,9 +93,9 @@ const cards = computed(() => props.kpis.filter(k => k.series.some(v => v !== nul
 
 .num {
   font-size: 44px;
-  font-weight: 500;
+  font-weight: var(--head-weight);
   line-height: 0.95;
-  letter-spacing: -0.04em;
+  letter-spacing: var(--head-spacing);
 }
 
 .sub {

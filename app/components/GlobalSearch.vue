@@ -193,12 +193,13 @@ watch(() => route.fullPath, close)
 
 .gs-box {
   position: relative;
-  width: 280px;
+  width: 260px;
+  max-width: 100%;
 }
 
 .gs-icon {
   position: absolute;
-  left: 10px;
+  left: 2px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--dim);
@@ -208,12 +209,13 @@ watch(() => route.fullPath, close)
 .gs-input {
   width: 100%;
   height: 36px;
-  padding: 0 52px 0 32px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--panel2);
+  padding: 0 52px 0 28px;
+  border: 0;
+  border-bottom: 2px solid var(--line);
+  border-radius: 0;
+  background: transparent;
   color: var(--text);
-  font-size: 13.5px;
+  font-size: 15px;
   -webkit-appearance: none;
   appearance: none;
 }
@@ -227,8 +229,8 @@ watch(() => route.fullPath, close)
 }
 
 .gs-input:focus {
-  background: var(--panel);
-  border-color: var(--line2);
+  outline: none;
+  border-color: var(--text);
 }
 
 .gs-kbd {
@@ -238,9 +240,9 @@ watch(() => route.fullPath, close)
   transform: translateY(-50%);
   padding: 1px 5px;
   border: 1px solid var(--line);
-  border-radius: 4px;
-  font-family: var(--mono);
-  font-size: 11px;
+  border-radius: 3px;
+  font-family: var(--meta);
+  font-size: 12px;
   color: var(--dim);
   pointer-events: none;
 }
@@ -258,13 +260,14 @@ watch(() => route.fullPath, close)
   padding: 6px;
   background: var(--panel);
   border: 1px solid var(--line2);
-  border-radius: 10px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
 }
 
 .gs-group {
   padding: 8px 10px 4px;
-  font-size: 11.5px;
+  font-size: 13px;
+  font-style: italic;
   color: var(--dim);
 }
 
@@ -274,9 +277,9 @@ watch(() => route.fullPath, close)
   gap: 12px;
   min-height: 36px;
   padding: 0 10px;
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--text);
-  font-size: 13.5px;
+  font-size: 15px;
   text-decoration: none;
 }
 
@@ -292,8 +295,8 @@ watch(() => route.fullPath, close)
 
 .gs-code {
   flex: none;
-  font-family: var(--mono);
-  font-size: 11.5px;
+  font-family: var(--meta);
+  font-size: 12.5px;
   color: var(--dim);
 }
 
@@ -332,11 +335,17 @@ watch(() => route.fullPath, close)
     width: auto;
   }
 
+  .gs.expanded .gs-icon {
+    left: 12px;
+    z-index: 1;
+  }
+
   .gs.expanded .gs-input {
     height: 44px;
-    padding-right: 12px;
+    padding: 0 12px 0 32px;
     background: var(--panel);
-    border-color: var(--line2);
+    border: 2px solid var(--text);
+    border-radius: 4px;
   }
 
   .gs-kbd {

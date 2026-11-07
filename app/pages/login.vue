@@ -142,7 +142,7 @@ function goPassword() {
 <template>
   <div class="card panel">
     <div class="brand">
-      <svg width="28" height="28" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="5" fill="none" stroke="var(--line2)" /><path d="M5 15 L9 9 L12.5 12.5 L17 6" fill="none" stroke="var(--agent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /><circle cx="17" cy="6" r="1.8" fill="var(--agent)" /></svg>
+      <AppLogo :size="28" />
       Aimarage
     </div>
 
@@ -213,7 +213,7 @@ function goPassword() {
 
 h1 {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .btn {

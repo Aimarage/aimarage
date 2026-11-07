@@ -238,8 +238,8 @@ async function disconnect(id: string) {
   flex-direction: column;
   gap: 10px;
   padding: 14px;
-  border: 1px solid var(--agent);
-  border-radius: 8px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
   background: var(--panel2);
 }
 
@@ -271,7 +271,7 @@ async function disconnect(id: string) {
   margin: 0;
   padding: 10px 12px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .check {
@@ -324,9 +324,9 @@ async function disconnect(id: string) {
   flex-wrap: wrap;
   gap: 8px;
   margin: 0;
-  padding: 8px 10px;
-  border-left: 3px solid var(--warn);
-  background: var(--panel2);
+  padding: 10px 12px;
+  border-radius: 3px;
+  background: var(--marker-soft);
 }
 
 .edit {

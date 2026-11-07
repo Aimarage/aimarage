@@ -97,7 +97,7 @@ async function endOthers() {
 
 .block h3 {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .line {
@@ -116,7 +116,7 @@ async function endOthers() {
 
 .cur {
   font-weight: 500;
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .small {

@@ -102,7 +102,7 @@ const claude = computed(() => props.items.filter(it => it.forClaude))
 .sub h3 {
   margin: 0;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: var(--head-weight);
 }
 
 .acc .row-title {

@@ -65,15 +65,17 @@ watch(() => route.fullPath, () => (open.value = false))
 
 .switch-btn {
   width: 100%;
-  height: 60px;
-  padding: 0 12px;
+  min-height: 64px;
+  padding: 10px;
   display: flex;
   align-items: center;
   gap: 12px;
-  border-radius: 12px;
-  border: 1px solid var(--line2);
-  background: var(--panel);
-  color: var(--text);
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid var(--side-line);
+  border-bottom: 1px solid var(--side-line);
+  background: transparent;
+  color: #ffffff;
   text-align: left;
   cursor: pointer;
 }
@@ -87,17 +89,23 @@ watch(() => route.fullPath, () => (open.value = false))
 }
 
 .what small {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--side-dim);
 }
 
 .name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .chev {
-  color: var(--muted);
+  color: var(--side-dim);
+}
+
+.switch-btn:hover .chev {
+  color: #ffffff;
 }
 
 .menu {
@@ -110,7 +118,7 @@ watch(() => route.fullPath, () => (open.value = false))
   padding: 6px;
   background: var(--panel);
   border: 1px solid var(--line2);
-  border-radius: 10px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
 }
 
@@ -120,10 +128,10 @@ watch(() => route.fullPath, () => (open.value = false))
   gap: 10px;
   min-height: 44px;
   padding: 0 8px;
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--text);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .menu-item:hover {
@@ -139,7 +147,7 @@ watch(() => route.fullPath, () => (open.value = false))
   place-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 7px;
+  border-radius: 4px;
   border: 1px dashed var(--line2);
   color: var(--muted);
 }

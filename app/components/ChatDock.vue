@@ -76,8 +76,8 @@ onBeforeUnmount(() => {
   padding: 0 18px 0 16px;
   border: 0;
   border-radius: 24px;
-  background: var(--agent);
-  color: var(--on-agent);
+  background: var(--btn);
+  color: var(--on-btn);
   font-size: 14px;
   font-weight: 500;
   box-shadow: var(--shadow);
@@ -119,8 +119,8 @@ onBeforeUnmount(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
   flex: none;
 }
 

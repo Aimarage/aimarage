@@ -107,7 +107,7 @@ const linksOf = (e: HistoryData['entries'][number]) => e.links.map(l => ({ ...l,
   display: block;
   width: 100%;
   border-radius: 2px;
-  background: var(--agent);
+  background: var(--primary);
   opacity: 0.75;
 }
 

@@ -632,7 +632,7 @@ async function removeProject() {
   line-height: 1.5;
   white-space: pre;
   background: var(--bg2);
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .snip {
@@ -652,7 +652,7 @@ async function removeProject() {
   white-space: pre-wrap;
   word-break: break-all;
   background: var(--bg2);
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .pacing {

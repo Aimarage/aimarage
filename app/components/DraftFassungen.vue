@@ -51,8 +51,8 @@ function countOf(p: string) {
 
 .vtab[aria-selected='true'] {
   color: var(--text);
-  border-bottom-color: var(--agent);
-  font-weight: 500;
+  border-bottom-color: var(--text);
+  font-weight: 700;
 }
 
 .count {

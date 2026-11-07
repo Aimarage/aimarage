@@ -767,7 +767,7 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
   flex-direction: column;
   gap: 10px;
   padding: 16px 20px;
-  border-left: 3px solid var(--warn);
+  background: color-mix(in srgb, var(--warn) 12%, var(--panel));
 }
 
 .stale p {
@@ -818,7 +818,7 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
   padding: 6px;
   background: var(--panel);
   border: 1px solid var(--line2);
-  border-radius: 10px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
 }
 
@@ -830,7 +830,7 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
   min-height: 40px;
   padding: 0 10px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
   color: var(--text);
   font-size: 13.5px;
@@ -1012,7 +1012,7 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
 .order {
   margin-top: 12px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   background: var(--panel2);
 }
 

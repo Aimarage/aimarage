@@ -176,12 +176,14 @@ export function renderReportHtml(r: WeeklyReport, lang: ReportLang = 'de', opts:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <title>${esc(t.title)} - ${esc(r.project.name)} - ${esc(r.from)}</title>
 <style>
-:root { --bg: #ffffff; --text: #0e1628; --muted: #4a5672; --line: #d8deea; --accent: #5641d8; --soft: #f4f6fa; }
-@media (prefers-color-scheme: dark) { :root { --bg: #0a0f1d; --text: #e4e9f5; --muted: #a3afcb; --line: #1f2b47; --accent: #a594ff; --soft: #111a2e; } }
+@font-face { font-family: 'Familjen Grotesk'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/fonts/familjen-grotesk-latin-wght-normal.woff2') format('woff2'); }
+:root { --bg: #ffffff; --text: #1a2433; --muted: #535e6d; --line: #dfe3e0; --accent: #1d5e4a; --soft: #f7f8f5; }
+@media (prefers-color-scheme: dark) { :root { --bg: #121b2a; --text: #eef2f7; --muted: #a9b4c3; --line: #2a374b; --accent: #74cfa9; --soft: #1b2739; } }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 'IBM Plex Sans', system-ui, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 'Familjen Grotesk', 'IBM Plex Sans', system-ui, sans-serif; }
 main { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
 header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 16px; }
 h1 { margin: 0; font-size: 22px; font-weight: 600; }
@@ -213,7 +215,7 @@ footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid var(--line);
   .v { text-align: left; }
 }
 @media print {
-  :root { --bg: #ffffff; --text: #000000; --muted: #444444; --line: #cccccc; --accent: #2a2a8a; --soft: #ffffff; }
+  :root { --bg: #ffffff; --text: #000000; --muted: #444444; --line: #cccccc; --accent: #1d5e4a; --soft: #ffffff; }
   @page { size: A4; margin: 16mm 14mm; }
   main { max-width: none; padding: 0; }
   .print { display: none; }

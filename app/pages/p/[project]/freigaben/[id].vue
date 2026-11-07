@@ -667,7 +667,7 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
   width: 14px;
   height: 14px;
   border: 2px solid var(--line2);
-  border-top-color: var(--agent);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -709,11 +709,12 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-left: 3px solid var(--agent);
+  background: var(--marker-soft);
+  box-shadow: none;
 }
 
 .guide.warn {
-  border-left-color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 12%, var(--panel));
 }
 
 .privacy ul {
@@ -738,9 +739,8 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
 .question {
   margin: 0;
   padding: 8px 12px;
-  border-left: 3px solid var(--line2);
   background: var(--panel2);
-  border-radius: 0 6px 6px 0;
+  border-radius: 3px;
   font-size: 14px;
   white-space: pre-line;
 }
@@ -779,7 +779,7 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
   gap: 6px 12px;
   padding: 10px 12px;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel2);
   font-size: 14px;
 }
@@ -825,7 +825,7 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
   padding: 6px;
   background: var(--panel);
   border: 1px solid var(--line2);
-  border-radius: 10px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
 }
 
@@ -837,7 +837,7 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
   min-height: 40px;
   padding: 0 10px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
   color: var(--text);
   text-decoration: none;
@@ -1014,7 +1014,7 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
 }
 
 .cur {
-  background: var(--agent-soft);
+  background: var(--primary-soft);
 }
 
 .vtabs {
@@ -1043,8 +1043,8 @@ async function act(action: 'approve' | 'reject' | 'posted', from: Act | null = n
 
 .vtab[aria-selected='true'] {
   color: var(--text);
-  border-bottom-color: var(--agent);
-  font-weight: 500;
+  border-bottom-color: var(--text);
+  font-weight: 700;
 }
 
 .count {

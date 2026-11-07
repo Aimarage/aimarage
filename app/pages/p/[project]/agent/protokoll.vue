@@ -102,8 +102,8 @@ const cost = (n: number) => (n ? `${n.toFixed(4)} EUR` : '-')
 .notice {
   margin: 0;
   padding: 14px 16px;
-  color: var(--muted);
-  border-left: 3px solid var(--agent);
+  color: var(--body);
+  background: var(--marker-soft);
 }
 
 .brief p {

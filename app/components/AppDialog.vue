@@ -32,7 +32,7 @@ onMounted(() => {
   max-height: calc(100dvh - 24px);
   padding: 0;
   border: 1px solid var(--line2);
-  border-radius: 10px;
+  border-radius: 4px;
   background: var(--panel);
   color: var(--text);
   box-shadow: var(--shadow);
@@ -57,7 +57,7 @@ onMounted(() => {
 .dlg-head h2 {
   flex: 1 1 auto;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .dlg-body {

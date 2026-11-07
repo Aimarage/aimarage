@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const db = await getDb()
   const brand = await workspaceBrand(db, c.ws.id)
   return {
-    brand: brand ? { name: brand.name, logoUrl: brand.logoUrl, accent: brand.accent } : null,
+    brand: brand ? { name: brand.name, logoUrl: brand.logoUrl, accent: brand.accent, marker: brand.marker, font: brand.font } : null,
     project: { name: c.project.name, url: c.project.url },
     lang: clientLang(c.project),
     timezone: c.ws.timezone,

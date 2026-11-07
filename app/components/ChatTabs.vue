@@ -17,7 +17,7 @@ const mainLabel = computed(() => (route.path.includes('/freigaben/') ? t('chat.t
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 4px;
   background: var(--panel2);
 }
 
@@ -29,7 +29,7 @@ const mainLabel = computed(() => (route.path.includes('/freigaben/') ? t('chat.t
   gap: 8px;
   min-height: 40px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 3px;
   background: transparent;
   color: var(--muted);
   font-size: 14px;
@@ -37,16 +37,15 @@ const mainLabel = computed(() => (route.path.includes('/freigaben/') ? t('chat.t
 }
 
 .ctab[aria-selected='true'] {
-  background: var(--panel);
-  color: var(--text);
-  font-weight: 500;
-  box-shadow: 0 0 0 1px var(--line);
+  background: var(--marker);
+  color: var(--on-marker);
+  font-weight: 700;
 }
 
 .dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--agent);
+  background: var(--primary);
 }
 </style>

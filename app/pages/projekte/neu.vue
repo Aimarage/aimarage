@@ -330,7 +330,7 @@ const canNext1 = computed(() => form.value.url.trim().length > 3)
 
 .chip:hover {
   color: var(--text);
-  border-color: var(--agent);
+  border-color: var(--primary);
 }
 
 .form-actions.panel-body {
@@ -341,8 +341,8 @@ const canNext1 = computed(() => form.value.url.trim().length > 3)
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
   animation: pulse 1.2s ease-in-out infinite;
 }
 
@@ -381,8 +381,8 @@ const canNext1 = computed(() => form.value.url.trim().length > 3)
 }
 
 .ps-run .pi {
-  border-color: var(--agent);
-  background: var(--agent-soft);
+  border-color: var(--primary);
+  background: var(--primary-soft);
 }
 
 .ps-error .pi {

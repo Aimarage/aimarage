@@ -20,8 +20,14 @@ export default defineNuxtConfig({
         { name: 'color-scheme', content: 'light dark' },
         { name: 'referrer', content: 'no-referrer' },
         { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'theme-color', content: '#1a2433' },
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/manifest.webmanifest' },
+      ],
     },
   },
   i18n: {
@@ -32,6 +38,7 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
     ],
     detectBrowserLanguage: false,
+    compilation: { strictMessage: false },
   },
   routeRules: {
     '/**': {

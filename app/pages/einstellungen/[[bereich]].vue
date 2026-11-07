@@ -443,7 +443,7 @@ async function saveWs() {
 .check input {
   width: 18px;
   height: 18px;
-  accent-color: var(--agent);
+  accent-color: var(--primary);
 }
 
 .statusline {
@@ -456,7 +456,7 @@ async function saveWs() {
   gap: 10px;
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   background: var(--panel2);
 }
 
@@ -488,7 +488,7 @@ async function saveWs() {
   align-items: flex-start;
   gap: 8px;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 13.5px;
   overflow-wrap: anywhere;
 }

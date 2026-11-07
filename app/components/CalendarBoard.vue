@@ -147,7 +147,7 @@ const done = (it: TaskItem) => it.state === 'done'
 
 function chipStyle(it: TaskItem) {
   const c = color(it)
-  const late = it.overdue ? { boxShadow: 'inset 3px 0 0 var(--down), inset 0 0 0 1px color-mix(in srgb, var(--down) 50%, transparent)' } : {}
+  const late = it.overdue ? { boxShadow: 'inset 0 0 0 1.5px var(--down)' } : {}
   if (it.preview) return { background: `color-mix(in srgb, ${c} 6%, var(--panel))`, border: `1px dashed color-mix(in srgb, ${c} 55%, transparent)` }
   if (it.milestone && !done(it)) return { background: c, color: 'var(--on-proj)', fontWeight: 600, ...late }
   return { background: `color-mix(in srgb, ${c} ${done(it) ? 8 : 17}%, var(--panel))`, ...late }
@@ -366,7 +366,7 @@ function onDropMonth(e: DragEvent, d: string) {
   margin: -8px -4px;
   padding: 8px 4px;
   box-sizing: content-box;
-  border-radius: 6px;
+  border-radius: 4px;
   border: 0;
   background: transparent;
   background-clip: content-box;
@@ -419,8 +419,8 @@ function onDropMonth(e: DragEvent, d: string) {
 }
 
 .dhead.today {
-  background: var(--agent-soft);
-  color: var(--agent);
+  background: var(--primary-soft);
+  color: var(--primary);
 }
 
 .adlabel {
@@ -444,11 +444,11 @@ function onDropMonth(e: DragEvent, d: string) {
 
 .adcell.today,
 .tcol.today {
-  background: var(--agent-soft);
+  background: var(--primary-soft);
 }
 
 .drop {
-  outline: 2px dashed var(--agent);
+  outline: 2px dashed var(--primary);
   outline-offset: -3px;
 }
 
@@ -567,7 +567,7 @@ function onDropMonth(e: DragEvent, d: string) {
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--agent);
+  background: var(--primary);
   z-index: 3;
   pointer-events: none;
 }
@@ -578,7 +578,7 @@ function onDropMonth(e: DragEvent, d: string) {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--agent);
+  background: var(--primary);
   z-index: 3;
   pointer-events: none;
 }
@@ -620,11 +620,11 @@ function onDropMonth(e: DragEvent, d: string) {
 }
 
 .mcell.today {
-  background: var(--agent-soft);
+  background: var(--primary-soft);
 }
 
 .mcell.today .mday {
-  color: var(--agent);
+  color: var(--primary);
   font-weight: 600;
 }
 
@@ -705,7 +705,7 @@ function onDropMonth(e: DragEvent, d: string) {
 }
 
 .mdn.today {
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .mrow {

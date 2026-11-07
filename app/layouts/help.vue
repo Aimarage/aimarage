@@ -8,7 +8,7 @@ const lang = computed(() => (route.query.lang === 'en' ? 'en' : 'de'))
   <div class="shell">
     <header class="top">
       <NuxtLink :to="{ path: '/hilfe', query: lang === 'en' ? { lang: 'en' } : {} }" class="brand">
-        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="5" fill="none" stroke="var(--line2)" /><path d="M5 15 L9 9 L12.5 12.5 L17 6" fill="none" stroke="var(--agent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /><circle cx="17" cy="6" r="1.8" fill="var(--agent)" /></svg>
+        <AppLogo />
         Aimarage
       </NuxtLink>
       <nav class="right" :aria-label="t('help.lang')">
@@ -57,7 +57,7 @@ const lang = computed(() => (route.query.lang === 'en' ? 'en' : 'de'))
 }
 
 .lang {
-  font-family: var(--mono);
+  font-family: var(--meta);
   font-size: 12.5px;
   color: var(--dim);
   text-decoration: none;

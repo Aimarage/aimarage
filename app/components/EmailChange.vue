@@ -86,7 +86,7 @@ async function verify(value?: string) {
 
 .block h3 {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .block p {

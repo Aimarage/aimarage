@@ -225,7 +225,7 @@ const ctr = (x: Term) => (x.impressions ? `${Math.round((x.clicks / x.impression
         <div><span class="big mono">{{ num(s.clicks) }}</span><span class="dim">{{ t('search.clicks') }}</span></div>
         <div><span class="big mono">{{ num(s.impressions) }}</span><span class="dim">{{ t('search.impressions') }}</span></div>
         <div><span class="big mono">{{ s.position ?? '-' }}</span><span class="dim">{{ t('search.position') }}</span></div>
-        <Sparkline v-if="s.impressions" class="hide-m" :values="s.series" color="var(--agent)" :width="160" :height="32" />
+        <Sparkline v-if="s.impressions" class="hide-m" :values="s.series" color="var(--primary)" :width="160" :height="32" />
       </div>
       <p v-if="!s.impressions" class="empty">{{ synced ? t('search.empty') : t('search.waiting') }}</p>
       <div v-else class="cols2">
@@ -323,7 +323,7 @@ const ctr = (x: Term) => (x.impressions ? `${Math.round((x.clicks / x.impression
 h3 {
   margin: 8px 0 6px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: var(--head-weight);
 }
 
 .terms {
@@ -370,24 +370,25 @@ h3 {
 .seg {
   display: inline-flex;
   margin-left: auto;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  border: 1.5px solid var(--text);
+  border-radius: 4px;
   overflow: hidden;
 }
 
 .segb {
-  padding: 3px 10px;
+  padding: 4px 12px;
   border: 0;
   background: none;
-  color: var(--muted);
+  color: var(--text);
   font: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   cursor: pointer;
 }
 
 .segb.on {
-  background: var(--panel2);
-  color: var(--text);
+  background: var(--marker);
+  color: var(--on-marker);
+  font-weight: 700;
 }
 
 .terr {

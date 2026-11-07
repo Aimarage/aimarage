@@ -30,14 +30,14 @@ function onDrop(e: DragEvent) {
   gap: 12px;
   padding: 18px 16px;
   border: 1px dashed var(--line2);
-  border-radius: 8px;
+  border-radius: 4px;
   color: var(--muted);
   cursor: pointer;
 }
 
 .drop:hover,
 .drop.over {
-  border-color: var(--agent);
+  border-color: var(--primary);
   color: var(--text);
   background: var(--panel2);
 }

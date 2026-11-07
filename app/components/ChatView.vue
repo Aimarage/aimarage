@@ -498,7 +498,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
 .crow {
   display: flex;
   align-items: center;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .crow:hover,
@@ -564,7 +564,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
   max-width: 560px;
   padding: 9px 13px;
   border-radius: 12px 12px 3px 12px;
-  background: var(--agent-soft);
+  background: var(--primary-soft);
   color: var(--text);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -608,8 +608,8 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
   height: 8px;
   margin-top: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
 .pulse {
@@ -650,7 +650,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
 }
 
 .txt :deep(a) {
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .step {
@@ -658,7 +658,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
   align-items: center;
   gap: 8px;
   margin-left: 20px;
-  font-family: var(--mono);
+  font-family: var(--meta);
   font-size: 11.5px;
   color: var(--dim);
 }
@@ -714,8 +714,8 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
 }
 
 .ps-run .pi {
-  border-color: var(--agent);
-  background: var(--agent-soft);
+  border-color: var(--primary);
+  background: var(--primary-soft);
 }
 
 .ps-error .pi {
@@ -730,7 +730,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
   min-height: 42px;
   padding: 0 12px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   color: var(--text);
   text-decoration: none;
   font-size: 13.5px;
@@ -765,7 +765,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
 
 .chip:hover {
   color: var(--text);
-  border-color: var(--agent);
+  border-color: var(--primary);
 }
 
 .off {
@@ -777,7 +777,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
 }
 
 .chat.dragging {
-  box-shadow: inset 0 0 0 2px var(--agent);
+  box-shadow: inset 0 0 0 2px var(--primary);
 }
 
 .staged {
@@ -878,7 +878,7 @@ const projectSlug = (id: unknown) => projectById(String(id ?? ''))?.slug ?? null
   min-height: 40px;
   max-height: 160px;
   padding: 9px 12px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid var(--line2);
   background: var(--bg);
   color: var(--text);

@@ -60,7 +60,7 @@ const teaser = computed(() => data.value?.teaser ?? null)
   margin: 8px 0 0;
   font-size: 13px;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .lead {
@@ -99,7 +99,7 @@ const teaser = computed(() => data.value?.teaser ?? null)
 
 .post {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 10px 12px;
 }
 
@@ -114,7 +114,7 @@ const teaser = computed(() => data.value?.teaser ?? null)
   position: relative;
   margin-top: 8px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
 }
 

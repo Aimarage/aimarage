@@ -153,7 +153,7 @@ const NuxtLink = resolveComponent('NuxtLink')
   position: absolute;
   inset: 0 auto 0 0;
   border-radius: 3px;
-  background: var(--agent);
+  background: var(--primary);
 }
 
 .st-behind .fill {

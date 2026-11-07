@@ -48,6 +48,9 @@ function blockHtml(b: MailBlock): string {
 }
 
 // Mit eigener Marke (White-Label): Name der Marke im Kopf, keine Aimarage-Fußzeile.
+// Logo ohne Bild (Mailprogramme blenden SVG und externe Bilder oft aus): gelbes Kästchen mit Haken.
+const LOGO = '<span style="display:inline-block;width:20px;height:20px;margin-right:8px;border-radius:3px;background:#ffe34f;color:#1a2433;font-size:14px;line-height:20px;text-align:center;vertical-align:-3px">&#10003;</span>'
+
 export interface MailBrand {
   name: string
 }
@@ -61,7 +64,7 @@ export function renderMail(content: MailContent, locale: MailLocale, brand: Mail
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(content.subject)}</title></head>
 <body style="margin:0;padding:0;background:#f6f6f4">
 <div style="max-width:520px;margin:0 auto;padding:32px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#222">
-<p style="margin:0 0 24px;font-size:17px;font-weight:700;letter-spacing:.2px;color:#111">${escapeHtml(head)}</p>
+<p style="margin:0 0 24px;font-size:17px;font-weight:700;letter-spacing:.2px;color:#111">${brand ? '' : LOGO}${escapeHtml(head)}</p>
 <div style="background:#fff;border:1px solid #e6e6e1;border-radius:8px;padding:8px 24px">
 ${content.blocks.map(blockHtml).join('\n')}
 </div>

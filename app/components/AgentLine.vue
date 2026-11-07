@@ -29,23 +29,23 @@ const text = computed(() => {
   gap: 10px;
   min-height: 44px;
   min-width: 0;
-  font-family: var(--mono);
-  font-size: 12px;
+  font-family: var(--meta);
+  font-size: 14px;
   color: var(--muted);
   text-decoration: none;
 }
 
 .agentline b {
   color: var(--text);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
   flex: none;
 }
 

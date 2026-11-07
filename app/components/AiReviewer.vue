@@ -63,7 +63,7 @@ async function toggle(e: Event) {
   height: 18px;
   flex: none;
   margin-top: 1px;
-  accent-color: var(--agent);
+  accent-color: var(--primary);
 }
 
 .hint {

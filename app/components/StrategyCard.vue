@@ -88,7 +88,7 @@ const changeIcon = (c: StrategyChange['change']) => (c === 'more' ? 'up' : c ===
 
 .sc.embedded {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   background: var(--panel);
   padding: 12px 0 14px;
 }
@@ -106,8 +106,8 @@ const changeIcon = (c: StrategyChange['change']) => (c === 'more' ? 'up' : c ===
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
 .sum {
@@ -136,7 +136,7 @@ const changeIcon = (c: StrategyChange['change']) => (c === 'more' ? 'up' : c ===
   place-items: center;
   width: 22px;
   height: 22px;
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel2);
   color: var(--muted);
   flex: none;

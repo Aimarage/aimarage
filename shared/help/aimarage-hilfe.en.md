@@ -14,6 +14,12 @@ Keywords: menu, imprint, privacy, terms, dpa, legal, navigation, pages, where do
 
 The left menu has Dashboard, Agent, Approvals, Calendar, Tasks, Strategy, Files, Reports, History, Accounts and, below them, Settings and Help. Help (/hilfe) explains every page, with search. At the top left you switch projects or go to "All projects"; admins create a "New project" there (/projekte/neu). At the top there is search across tasks, drafts and projects, on the right the account menu with "Account and settings" (/einstellungen) and "Log out". The mailbox is reached from the dashboard or from Accounts ("View mailbox").
 
+## Light and dark {#darstellung}
+Path: /p/<projekt>
+Keywords: dark mode, light mode, light, dark, system, appearance, theme, moon, sun, night mode, colours, contrast, dunkelmodus, hell, dunkel
+
+At the top right next to your profile, the moon or sun button switches between light and dark. In the profile menu (click your initials) you choose Light, Dark or System under Appearance; System follows your device setting and is the default. The browser remembers your choice, separately on each device. The aimarage.com website has the same button.
+
 ## Dashboard {#dashboard}
 Path: /p/<projekt>
 Keywords: dashboard, start page, today, since yesterday, for you, numbers yesterday, heute dran, seit gestern

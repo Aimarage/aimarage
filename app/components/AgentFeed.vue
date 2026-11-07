@@ -61,8 +61,8 @@ const stamp = (f: FeedItem) => (isoDay(f.at) === boot.value?.today ? time(f.at) 
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
   flex: none;
 }
 

@@ -20,32 +20,33 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 16px 20px;
-  border-left: 3px solid var(--agent);
+  padding: 18px 24px;
+  background: var(--marker-soft);
+  box-shadow: none;
 }
 
 .todo.quiet {
-  border-left-color: var(--line2);
+  background: var(--panel);
+  box-shadow: var(--sheet);
 }
 
 .todo.warn {
-  border-left-color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 12%, var(--panel));
 }
 
 .todo-label {
   margin: 0;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--dim);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
 }
 
 .todo-line {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.45;
+  font-size: 19px;
+  font-weight: var(--head-weight);
+  letter-spacing: var(--head-spacing);
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -56,15 +57,15 @@ const { t } = useI18n()
 
 .todo-sub {
   margin: 0;
-  font-size: 13px;
-  color: var(--muted);
+  font-size: 14.5px;
+  color: var(--body);
 }
 
 .todo-flair {
   align-self: flex-start;
   margin: 2px 0 0;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 3px;
   background: color-mix(in srgb, var(--warn) 14%, var(--panel));
   font-size: 13.5px;
   font-weight: 600;

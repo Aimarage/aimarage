@@ -365,7 +365,7 @@ const todoCount = computed(() => data.value.items.length + data.value.proposals.
 
 .when {
   flex: none;
-  font-family: var(--mono);
+  font-family: var(--meta);
   font-size: 12px;
   color: var(--dim);
 }
@@ -413,7 +413,7 @@ const todoCount = computed(() => data.value.items.length + data.value.proposals.
   margin-left: auto;
   padding-left: 10px;
   border: 1px solid var(--line2);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel);
   color: var(--dim);
 }

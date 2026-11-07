@@ -14,7 +14,7 @@ interface ClientDraft {
   targetUrl: string | null
   feedback: { verdict: 'ok' | 'change', comment: string | null, at: string } | null
 }
-interface ClientBrand { name: string, logoUrl: string | null, accent: string | null }
+interface ClientBrand { name: string, logoUrl: string | null, accent: string | null, marker?: string | null, font?: string | null }
 interface ClientData { brand: ClientBrand | null, project: { name: string, url: string | null }, lang: 'de' | 'en', timezone: string, canReport: boolean, expiresAt: string | null, drafts: ClientDraft[] }
 
 definePageMeta({ layout: false })
@@ -32,15 +32,8 @@ useHead(() => ({
   link: brand.value?.logoUrl ? [{ rel: 'icon', href: brand.value.logoUrl, key: 'favicon' }] : [],
 }))
 
-function onAccent(hex: string): string {
-  const n = Number.parseInt(hex.slice(1), 16)
-  const lum = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255
-  return lum > 0.6 ? '#111111' : '#ffffff'
-}
-const brandStyle = computed(() => {
-  const a = brand.value?.accent
-  return a && /^#[0-9a-f]{6}$/i.test(a) ? { '--agent': a, '--on-agent': onAccent(a) } : undefined
-})
+const brandStyle = computed(() => brandThemeStyle(brand.value))
+useHead(() => (brandStyle.value ? { htmlAttrs: { style: brandStyle.value } } : {}))
 
 const loc = computed(() => (locale.value === 'en' ? 'en-GB' : 'de-AT'))
 function when(d: ClientDraft) {
@@ -83,7 +76,7 @@ async function send(d: ClientDraft, verdict: 'ok' | 'change') {
 </script>
 
 <template>
-  <main class="client" :style="brandStyle">
+  <main class="client">
     <template v-if="data">
       <div v-if="brand" class="brandbar">
         <img v-if="brand.logoUrl" :src="brand.logoUrl" :alt="brand.name" class="logo">
@@ -164,7 +157,7 @@ async function send(d: ClientDraft, verdict: 'ok' | 'change') {
 .brandname {
   font-size: 17px;
   font-weight: 700;
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .client {
@@ -194,7 +187,7 @@ async function send(d: ClientDraft, verdict: 'ok' | 'change') {
 h1 {
   margin: 0;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .intro {
@@ -217,7 +210,7 @@ h1 {
   gap: 12px;
   padding: 18px 16px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 4px;
   background: var(--panel);
 }
 
@@ -232,7 +225,7 @@ h1 {
 h2 {
   margin: 0;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .when {
@@ -260,7 +253,7 @@ h2 {
 .media img,
 .media video {
   width: 100%;
-  border-radius: 6px;
+  border-radius: 4px;
   border: 1px solid var(--line);
   background: var(--panel2);
 }
@@ -277,7 +270,7 @@ h2 {
   gap: 4px;
   margin-top: 10px;
   padding-left: 12px;
-  border-left: 2px solid var(--line);
+  font-style: italic;
 }
 
 .pf {
@@ -295,7 +288,7 @@ h2 {
 .state {
   margin: 0;
   padding: 8px 10px;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 13px;
   background: var(--panel2);
 }

@@ -219,19 +219,19 @@ const historyRows = computed(() => (data.value?.history ?? []).flatMap(h => h.ch
   padding: 14px 16px;
   color: var(--text);
   text-decoration: none;
-  border-left: 3px solid var(--agent);
+  background: var(--marker-soft);
 }
 
 .notice:hover {
-  background: var(--panel2);
+  background: var(--marker-soft-hover);
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
 .push {
@@ -273,10 +273,9 @@ const historyRows = computed(() => (data.value?.history ?? []).flatMap(h => h.ch
 }
 
 .summary.review {
-  padding-top: 6px;
-  border-left: 2px solid var(--agent);
   margin: 10px 16px 0;
-  padding: 0 0 0 10px;
+  padding: 0;
+  font-style: italic;
 }
 
 .summary + :deep(.rows),

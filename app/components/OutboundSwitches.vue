@@ -53,7 +53,7 @@ async function set(key: 'publishLive' | 'sendLive', v: boolean) {
   height: 18px;
   flex: none;
   margin-top: 1px;
-  accent-color: var(--agent);
+  accent-color: var(--primary);
 }
 
 .hint {

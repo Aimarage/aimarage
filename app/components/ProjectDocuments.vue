@@ -206,7 +206,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
   gap: 10px;
   padding: 6px 10px;
   border: 1px dashed var(--line2);
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 13px;
 }
 

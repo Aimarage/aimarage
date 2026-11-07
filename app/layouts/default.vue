@@ -37,6 +37,10 @@ const brand = computed(() => {
   const b = (boot.value?.extensions as { brand?: { name: string, logoUrl: string | null, inApp: boolean } | null } | undefined)?.brand
   return b?.inApp && b.logoUrl ? b : null
 })
+const brandName = computed(() => {
+  const b = (boot.value?.extensions as { brand?: { name: string, inApp: boolean } | null } | undefined)?.brand
+  return b?.inApp && b.name ? b.name : 'Aimarage'
+})
 
 function active(item: { to: string, exact?: boolean }) {
   return item.exact ? route.path === item.to : route.path.startsWith(item.to)
@@ -63,55 +67,62 @@ watch(() => route.path, showActive)
 
 <template>
   <div class="shell">
-    <header class="top pad">
-      <MobileMenu />
-      <NuxtLink v-if="brand" :to="base" class="brand">
-        <img :src="brand.logoUrl!" :alt="brand.name" class="brand-logo">
-      </NuxtLink>
-      <NuxtLink v-else :to="base" class="brand">
-        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="5" fill="none" stroke="var(--line2)" /><path d="M5 15 L9 9 L12.5 12.5 L17 6" fill="none" stroke="var(--agent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /><circle cx="17" cy="6" r="1.8" fill="var(--agent)" /></svg>
-        Aimarage
-      </NuxtLink>
-      <AgentLine class="agentline" />
-      <div class="right">
-        <GlobalSearch />
-        <AccountMenu />
-      </div>
-    </header>
-    <div class="body" :class="{ 'chat-n': chat.narrowOpen.value }">
-      <aside v-if="settingsNav.inSettings.value" class="side">
-        <NuxtLink :to="settingsNav.back.value.to" class="back"><Icon name="chevron-left" :size="14" /><span class="ellipsis">{{ settingsNav.back.value.label }}</span></NuxtLink>
-        <nav ref="navEl" class="nav" :aria-label="t('settings.title')">
-          <template v-for="g in settingsNav.groups.value" :key="g.id">
-            <h2 class="group">{{ g.label }}</h2>
-            <NuxtLink v-for="item in g.items" :key="item.id" :to="item.to" class="nav-item" :class="{ active: settingsNav.active.value?.id === item.id }" :aria-current="settingsNav.active.value?.id === item.id ? 'page' : undefined">
-              <Icon :name="item.icon" />{{ item.label }}
+    <aside class="side">
+      <div class="side-in">
+        <NuxtLink :to="base" class="brand side-brand">
+          <img v-if="brand" :src="brand.logoUrl!" :alt="brand.name" class="brand-logo">
+          <template v-else><AppLogo />{{ brandName }}</template>
+        </NuxtLink>
+        <template v-if="settingsNav.inSettings.value">
+          <NuxtLink :to="settingsNav.back.value.to" class="back"><Icon name="chevron-left" :size="14" /><span class="ellipsis">{{ settingsNav.back.value.label }}</span></NuxtLink>
+          <nav ref="navEl" class="nav" :aria-label="t('settings.title')">
+            <template v-for="g in settingsNav.groups.value" :key="g.id">
+              <h2 class="group">{{ g.label }}</h2>
+              <NuxtLink v-for="item in g.items" :key="item.id" :to="item.to" class="nav-item" :class="{ active: settingsNav.active.value?.id === item.id }" :aria-current="settingsNav.active.value?.id === item.id ? 'page' : undefined">
+                <Icon :name="item.icon" />{{ item.label }}
+              </NuxtLink>
+            </template>
+            <button type="button" class="nav-item logout" @click="logout"><Icon name="logout" />{{ t('account.logout') }}</button>
+          </nav>
+        </template>
+        <template v-else>
+          <ProjectSwitcher class="switcher" />
+          <nav ref="navEl" class="nav" :aria-label="t('nav.main')">
+            <NuxtLink v-for="item in nav" :key="item.to" :to="item.to" class="nav-item" :class="{ active: active(item) }" :aria-current="active(item) ? 'page' : undefined">
+              <Icon :name="item.icon" />{{ item.label }}<span v-if="item.count" class="count-n" :class="{ late: item.late }" :title="item.late ? t('dash.overdueLine', item.count) : undefined">{{ item.count }}</span>
             </NuxtLink>
-          </template>
-          <button type="button" class="nav-item logout" @click="logout"><Icon name="logout" />{{ t('account.logout') }}</button>
-        </nav>
+            <NuxtLink :to="`${base}/einstellungen`" class="nav-item settings" :class="{ active: route.path.startsWith(`${base}/einstellungen`) }" :aria-current="route.path.startsWith(`${base}/einstellungen`) ? 'page' : undefined">
+              <Icon name="settings" />{{ t('nav.settings') }}
+            </NuxtLink>
+            <NuxtLink to="/hilfe" class="nav-item help" :class="{ active: route.path.startsWith('/hilfe') }" :aria-current="route.path.startsWith('/hilfe') ? 'page' : undefined">
+              <Icon name="help" />{{ t('nav.help') }}
+            </NuxtLink>
+          </nav>
+        </template>
         <div class="legal"><ExtSlot name="legal-links" /></div>
-      </aside>
-      <aside v-else class="side">
-        <ProjectSwitcher class="switcher" />
-        <nav ref="navEl" class="nav" :aria-label="t('nav.main')">
-          <NuxtLink v-for="item in nav" :key="item.to" :to="item.to" class="nav-item" :class="{ active: active(item) }" :aria-current="active(item) ? 'page' : undefined">
-            <Icon :name="item.icon" />{{ item.label }}<span v-if="item.count" class="badge" :class="{ late: item.late }" :title="item.late ? t('dash.overdueLine', item.count) : undefined">{{ item.count }}</span>
+      </div>
+    </aside>
+    <div class="body" :class="{ 'chat-n': chat.narrowOpen.value }">
+      <div class="col">
+        <header class="top pad">
+          <MobileMenu />
+          <NuxtLink :to="base" class="brand top-brand">
+            <img v-if="brand" :src="brand.logoUrl!" :alt="brand.name" class="brand-logo">
+            <template v-else><AppLogo />{{ brandName }}</template>
           </NuxtLink>
-          <NuxtLink :to="`${base}/einstellungen`" class="nav-item settings" :class="{ active: route.path.startsWith(`${base}/einstellungen`) }" :aria-current="route.path.startsWith(`${base}/einstellungen`) ? 'page' : undefined">
-            <Icon name="settings" />{{ t('nav.settings') }}
-          </NuxtLink>
-          <NuxtLink to="/hilfe" class="nav-item help" :class="{ active: route.path.startsWith('/hilfe') }" :aria-current="route.path.startsWith('/hilfe') ? 'page' : undefined">
-            <Icon name="help" />{{ t('nav.help') }}
-          </NuxtLink>
-        </nav>
-        <div class="legal"><ExtSlot name="legal-links" /></div>
-      </aside>
-      <main class="main pad">
-        <ExtSlot name="banner" />
-        <ChatTabs v-if="chat.onTask.value" class="tabs-n" />
-        <slot />
-      </main>
+          <AgentLine class="agentline" />
+          <div class="right">
+            <GlobalSearch />
+            <ThemeToggle class="theme" />
+            <AccountMenu />
+          </div>
+        </header>
+        <main class="main pad">
+          <ExtSlot name="banner" />
+          <ChatTabs v-if="chat.onTask.value" class="tabs-n" />
+          <slot />
+        </main>
+      </div>
       <ChatDock />
     </div>
     <ToastHost />
@@ -124,39 +135,61 @@ watch(() => route.path, showActive)
 </template>
 
 <style scoped>
-/* Kopfzeile */
+/* Rahmen */
 .shell {
+  display: flex;
   min-height: 100vh;
   background: var(--main);
   color: var(--text);
 }
 
+.body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.col {
+  flex: 999 1 560px;
+  min-width: 0;
+}
+
+/* Kopfzeile */
 .top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 24px;
-  padding: 12px 32px;
-  border-bottom: 1px solid var(--line);
-  background: var(--chrome);
+  padding: 22px 48px 0;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 19px;
   color: var(--text);
   text-decoration: none;
 }
 
+.top-brand {
+  display: none;
+}
+
 .brand-logo {
   display: block;
-  max-height: 28px;
+  max-height: 30px;
   max-width: 180px;
   object-fit: contain;
+}
+
+.agentline {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .right {
@@ -164,33 +197,50 @@ watch(() => route.path, showActive)
   align-items: center;
   gap: 12px;
   margin-left: auto;
+  min-width: 0;
+}
+
+@media (min-width: 601px) {
+  .top {
+    flex-wrap: nowrap;
+  }
 }
 
 /* Seitenleiste */
-.body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+.side {
+  flex: 0 0 232px;
+  width: 232px;
+  min-width: 0;
+  background: var(--side);
+  color: var(--side-text);
 }
 
-.side {
-  flex: 0 0 240px;
-  max-width: 240px;
-  min-width: 0;
-  padding: 20px 12px;
-  border-right: 1px solid var(--line);
-  align-self: stretch;
-  background: var(--side);
+.side-in {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 16px 18px;
+  scrollbar-width: thin;
+}
+
+.side-brand {
+  color: #ffffff;
+  padding: 0 10px 20px;
 }
 
 .switcher {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  flex: 1 1 auto;
+  gap: 2px;
 }
 
 .nav-item {
@@ -198,38 +248,54 @@ watch(() => route.path, showActive)
   align-items: center;
   gap: 11px;
   width: 100%;
-  min-height: 44px;
-  padding: 0 12px;
+  min-height: 40px;
+  padding: 0 10px;
   border-radius: 4px;
-  color: var(--muted);
-  font-size: 13.5px;
+  color: var(--side-text);
+  font-size: 15.5px;
   text-decoration: none;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.nav-item :deep(svg) {
+  opacity: 0.7;
 }
 
 .nav-item:hover {
-  color: var(--text);
+  color: var(--side-hover);
 }
 
 .nav-item.active {
-  background: var(--panel2);
-  color: var(--text);
-  box-shadow: inset 2px 0 0 var(--agent);
+  background: var(--marker);
+  color: var(--on-marker);
+  font-weight: 600;
 }
 
-.nav-item .badge {
+.nav-item.active :deep(svg) {
+  opacity: 1;
+}
+
+.count-n {
   margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--marker);
 }
 
-.nav-item .badge.late {
-  background: var(--down);
-  color: var(--panel);
+.nav-item.active .count-n {
+  color: var(--on-marker);
+}
+
+.count-n.late {
+  padding: 0 6px;
+  border-radius: 3px;
+  background: var(--done);
+  color: #ffffff;
 }
 
 .nav-item.settings {
-  margin-top: 12px;
-  border-top: 1px solid var(--line);
-  border-radius: 0 0 4px 4px;
+  margin-top: auto;
 }
 
 .back {
@@ -237,24 +303,23 @@ watch(() => route.path, showActive)
   align-items: center;
   gap: 6px;
   min-height: 36px;
-  padding: 0 12px;
-  margin-bottom: 12px;
-  color: var(--muted);
-  font-size: 13px;
+  padding: 0 10px;
+  margin-bottom: 8px;
+  color: var(--side-dim);
+  font-size: 14px;
   text-decoration: none;
 }
 
 .back:hover {
-  color: var(--text);
+  color: var(--side-hover);
 }
 
 .group {
-  margin: 14px 12px 2px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
+  margin: 16px 10px 4px;
+  font-size: 13px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--side-dim);
 }
 
 .group:first-child {
@@ -262,25 +327,32 @@ watch(() => route.path, showActive)
 }
 
 .nav-item.logout {
-  margin-top: 12px;
+  margin-top: auto;
   border: 0;
-  border-top: 1px solid var(--line);
-  border-radius: 0 0 4px 4px;
   background: transparent;
   cursor: pointer;
   font: inherit;
-  font-size: 13.5px;
+  font-size: 15.5px;
 }
 
 .legal {
-  margin-top: 16px;
-  padding: 0 12px;
+  margin-top: 14px;
+  padding: 12px 10px 0;
+  border-top: 1px solid var(--side-line);
+  font-size: 12.5px;
+}
+
+.legal :deep(a) {
+  color: var(--side-dim);
+}
+
+.legal :deep(a:hover) {
+  color: var(--side-hover);
 }
 
 .main {
-  flex: 999 1 560px;
   min-width: 0;
-  padding: 44px 48px 72px;
+  padding: 36px 48px 72px;
 }
 
 /* Chat */
@@ -307,27 +379,79 @@ watch(() => route.path, showActive)
 
 /* Handy */
 @media (max-width: 900px) {
-  .side {
-    flex: 1 1 100%;
-    max-width: none;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    padding: 8px 16px;
+  .shell {
+    flex-direction: column;
   }
 
-  .switcher {
+  .body,
+  .col {
+    display: contents;
+  }
+
+  .top {
+    order: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: var(--side);
+    color: #ffffff;
+  }
+
+  .top-brand {
+    display: flex;
+    color: #ffffff;
+  }
+
+  .top :deep(.mm-btn),
+  .top :deep(.gs-open),
+  .top .theme {
+    background: transparent;
+    border-color: var(--side-line);
+    color: var(--side-text);
+  }
+
+  .top :deep(.acc-btn) {
+    color: var(--side-text);
+  }
+
+  .agentline {
+    color: var(--side-text);
+  }
+
+  .top :deep(.gs-input) {
+    color: #ffffff;
+    border-color: var(--side-line);
+  }
+
+  .agentline :deep(b) {
+    color: #ffffff;
+  }
+
+  .agentline :deep(.dot:not(.off)) {
+    background: #6cc4a1;
+  }
+
+  .side {
+    order: 1;
+    flex: none;
+    width: auto;
+    padding: 0 16px 10px;
+  }
+
+  .side-in {
+    display: contents;
+  }
+
+  .side-brand,
+  .switcher,
+  .group,
+  .nav-item.logout,
+  .legal {
     display: none;
   }
 
   .back {
     margin-bottom: 4px;
     padding: 0;
-  }
-
-  .group,
-  .nav-item.logout,
-  .legal {
-    display: none;
   }
 
   .nav {
@@ -350,16 +474,24 @@ watch(() => route.path, showActive)
     min-height: 36px;
     padding: 0 10px;
     gap: 8px;
+    font-size: 15px;
+    white-space: nowrap;
   }
 
   .nav-item.settings {
     margin-top: 0;
-    border-top: 0;
-    border-radius: 4px;
   }
 
-  .nav-item .badge {
+  .count-n {
     margin-left: 4px;
+  }
+
+  .main {
+    order: 2;
+  }
+
+  .body > :deep(.chatcol) {
+    order: 3;
   }
 }
 

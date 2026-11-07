@@ -157,7 +157,7 @@ async function copy(text: string) {
   width: 16px;
   height: 16px;
   flex: none;
-  accent-color: var(--agent);
+  accent-color: var(--primary);
 }
 
 .group {
@@ -202,8 +202,8 @@ async function copy(text: string) {
   flex-direction: column;
   gap: 10px;
   padding: 14px;
-  border: 1px solid var(--agent);
-  border-radius: 8px;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
   background: var(--panel2);
 }
 

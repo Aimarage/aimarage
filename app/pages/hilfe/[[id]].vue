@@ -142,7 +142,7 @@ useHead(() => {
 }
 
 .topic:target {
-  box-shadow: inset 2px 0 0 var(--agent);
+  background: var(--marker-soft);
 }
 
 .topic .title {
@@ -152,7 +152,7 @@ useHead(() => {
 }
 
 .topic .title:hover {
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .topic p {
@@ -185,7 +185,7 @@ useHead(() => {
 .text h2 {
   margin: 28px 0 10px;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: var(--head-weight);
 }
 
 .text :deep(code) {
@@ -201,7 +201,7 @@ useHead(() => {
   margin: 0 0 14px;
   padding: 12px 14px;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel);
   overflow-x: auto;
 }

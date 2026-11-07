@@ -315,7 +315,7 @@ const offText = computed(() => {
 .bubble {
   padding: 9px 13px;
   border-radius: 12px 12px 3px 12px;
-  background: var(--agent-soft);
+  background: var(--primary-soft);
   color: var(--text);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -359,8 +359,8 @@ const offText = computed(() => {
   height: 8px;
   margin-top: 8px;
   border-radius: 50%;
-  background: var(--agent);
-  box-shadow: 0 0 0 4px var(--agent-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
 .pulse {
@@ -407,7 +407,7 @@ const offText = computed(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--mono);
+  font-family: var(--meta);
   font-size: 11.5px;
   color: var(--dim);
 }
@@ -432,7 +432,7 @@ const offText = computed(() => {
   margin-left: 20px;
   padding: 10px 12px;
   border: 1px dashed var(--line2);
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 13px;
 }
 
@@ -488,7 +488,7 @@ const offText = computed(() => {
 
 .chip:hover {
   color: var(--text);
-  border-color: var(--agent);
+  border-color: var(--primary);
 }
 
 .off {
@@ -500,7 +500,7 @@ const offText = computed(() => {
 }
 
 .chat.dragging {
-  box-shadow: inset 0 0 0 2px var(--agent);
+  box-shadow: inset 0 0 0 2px var(--primary);
 }
 
 .staged {
@@ -577,7 +577,7 @@ const offText = computed(() => {
   min-height: 40px;
   max-height: 160px;
   padding: 9px 12px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid var(--line2);
   background: var(--bg);
   color: var(--text);

@@ -2767,5 +2767,13 @@
     "asText": "As text",
     "guide": "Guide",
     "lang": "Language"
+  },
+  "theme": {
+    "title": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toLight": "Light mode",
+    "toDark": "Dark mode"
   }
 }

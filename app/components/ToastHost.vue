@@ -23,7 +23,7 @@ const { toasts } = useToast()
 
 .toast {
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   background: var(--text);
   color: var(--bg);
   font-size: 13.5px;

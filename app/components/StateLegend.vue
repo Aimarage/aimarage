@@ -37,7 +37,7 @@ const { t } = useI18n()
 }
 
 .bar.late {
-  box-shadow: inset 3px 0 0 var(--down), inset 0 0 0 1px color-mix(in srgb, var(--down) 50%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--down);
 }
 
 .bar.dashed {

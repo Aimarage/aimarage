@@ -68,7 +68,7 @@ async function logout() {
     <div v-if="open" class="mm-back" @click="close()" />
     <div v-if="open" id="mobile-menu" ref="panel" class="mm" role="dialog" aria-modal="true" :aria-label="t('nav.main')">
       <div class="mm-head">
-        <b>Aimarage</b>
+        <b class="mm-brand"><AppLogo />Aimarage</b>
         <button type="button" class="icon-btn mm-close" :aria-label="t('nav.closeMenu')" @click="close()"><Icon name="x" :size="18" /></button>
       </div>
       <nav v-if="settingsNav.inSettings.value" class="mm-sec" :aria-label="t('settings.title')">
@@ -129,7 +129,7 @@ async function logout() {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: rgb(0 0 0 / 0.35);
+  background: var(--overlay);
 }
 
 .mm {
@@ -142,7 +142,7 @@ async function logout() {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 8px 12px calc(16px + env(safe-area-inset-bottom));
-  background: var(--side);
+  background: var(--panel);
   border-right: 1px solid var(--line);
   box-shadow: var(--shadow);
 }
@@ -153,7 +153,14 @@ async function logout() {
   justify-content: space-between;
   min-height: 48px;
   padding: 0 4px 0 8px;
-  font-size: 15px;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.mm-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .mm-close {
@@ -171,8 +178,9 @@ async function logout() {
 
 .mm-sec h2 {
   margin: 0 8px 6px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: var(--head-weight);
+  font-style: italic;
   color: var(--muted);
 }
 
@@ -186,15 +194,21 @@ async function logout() {
   gap: 10px;
   min-height: 44px;
   padding: 0 8px;
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--text);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .mm-item:hover,
 .mm-acc :deep(.item:hover) {
   background: var(--panel2);
+}
+
+.mm-item[aria-current='page'] {
+  background: var(--marker);
+  color: var(--on-marker);
+  font-weight: 600;
 }
 
 .mm-acc :deep(.item) {
@@ -205,11 +219,11 @@ async function logout() {
   min-height: 44px;
   padding: 0 10px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
   color: var(--text);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
   text-align: left;
   cursor: pointer;
 }
@@ -223,7 +237,7 @@ async function logout() {
   place-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 7px;
+  border-radius: 4px;
   border: 1px dashed var(--line2);
   color: var(--muted);
 }

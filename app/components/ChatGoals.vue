@@ -16,7 +16,7 @@ const { data } = useFetch<{ goals: GoalItem[] }>('/api/goals', { query: computed
 <style scoped>
 .cg {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
 }
 </style>

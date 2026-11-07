@@ -14,6 +14,12 @@ Stichworte: menue, navigation, seiten, wo finde ich, impressum, datenschutz, agb
 
 Links im Menü stehen Dashboard, Agent, Freigaben, Kalender, Aufgaben, Strategie, Unterlagen, Berichte, Verlauf, Konten und darunter Einstellungen und Hilfe. Die Hilfe (/hilfe) erklärt alle Seiten, mit Suche. Oben links wechselst du das Projekt oder gehst auf "Alle Projekte"; Admins legen dort ein "Neues Projekt" an (/projekte/neu). Oben gibt es die Suche über Aufgaben, Entwürfe und Projekte, rechts das Konto-Menü mit "Konto und Einstellungen" (/einstellungen) und "Abmelden". Das Postfach erreichst du über das Dashboard oder über Konten ("Postfach ansehen").
 
+## Hell und dunkel {#darstellung}
+Pfad: /p/<projekt>
+Stichworte: dunkelmodus, dark mode, hell, dunkel, system, darstellung, mond, sonne, nachtmodus, farben, kontrast, light mode, appearance, theme
+
+Oben rechts neben deinem Profil schaltet der Knopf mit Mond oder Sonne zwischen heller und dunkler Darstellung um. Im Profil-Menü (Klick auf deine Initialen) wählst du unter Darstellung Hell, Dunkel oder System; System folgt der Einstellung deines Geräts und ist der Standard. Die Wahl merkt sich der Browser, auf jedem Gerät einzeln. Auch die Website aimarage.com hat diesen Knopf.
+
 ## Dashboard {#dashboard}
 Pfad: /p/<projekt>
 Stichworte: dashboard, startseite, heute dran, seit gestern, fuer dich, kennzahlen gestern, start page, today, since yesterday

@@ -2767,5 +2767,13 @@
     "asText": "Als Text",
     "guide": "Anleitung",
     "lang": "Sprache"
+  },
+  "theme": {
+    "title": "Darstellung",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System",
+    "toLight": "Helle Darstellung",
+    "toDark": "Dunkle Darstellung"
   }
 }

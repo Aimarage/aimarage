@@ -35,8 +35,8 @@ const label = computed(() => [props.next && props.state !== 'done' ? t(`next.${p
 }
 
 .s-ai {
-  background: var(--agent);
-  color: var(--on-agent);
+  background: var(--primary);
+  color: var(--on-primary);
 }
 
 .s-you {

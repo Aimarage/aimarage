@@ -28,9 +28,9 @@ const label = computed(() => (props.owner === 'agent' ? t('cal.owner.agent') : m
 }
 
 .ob.agent {
-  background: var(--agent);
+  background: var(--primary);
   box-shadow: none;
-  color: var(--on-agent);
+  color: var(--on-primary);
   font-size: 8.5px;
 }
 

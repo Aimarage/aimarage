@@ -168,7 +168,7 @@ const src = (i: FundusEntry) => `/api/projects/${props.projectId}/fundus/${i.id}
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel2);
 }
 

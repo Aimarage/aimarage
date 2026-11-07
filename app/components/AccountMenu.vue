@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { THEME_MODES } from '~~/shared/utils/brand-theme'
+
 const { boot } = useBoot()
 const { t } = useI18n()
 const open = ref(false)
@@ -30,6 +32,7 @@ async function logout() {
   boot.value = null
   await navigateTo('/login')
 }
+const theme = useTheme()
 </script>
 
 <template>
@@ -44,6 +47,12 @@ async function logout() {
         <span class="ellipsis dim">{{ boot?.workspace.name }}<template v-if="boot?.workspace.demo"> ({{ t('account.demo') }})</template></span>
       </div>
       <button v-for="w in otherWorkspaces" :key="w.id" type="button" class="item" role="menuitem" @click="switchTo(w.id)"><Icon name="grid" /><span class="ellipsis">{{ t('account.switchTo', { name: w.name }) }}</span></button>
+      <div class="theme" role="group" :aria-label="t('theme.title')">
+        <span class="dim">{{ t('theme.title') }}</span>
+        <div class="seg">
+          <button v-for="m in THEME_MODES" :key="m" type="button" :aria-pressed="theme.mode.value === m" @click="theme.set(m)">{{ t(`theme.${m}`) }}</button>
+        </div>
+      </div>
       <NuxtLink to="/einstellungen" class="item" role="menuitem"><Icon name="settings" />{{ t('account.settings') }}</NuxtLink>
       <ExtSlot name="account-menu" />
       <button type="button" class="item" role="menuitem" @click="logout"><Icon name="logout" />{{ t('account.logout') }}</button>
@@ -52,6 +61,20 @@ async function logout() {
 </template>
 
 <style scoped>
+.theme {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.theme .seg button {
+  flex: 1 1 0;
+}
+
 .acc {
   position: relative;
 }
@@ -90,7 +113,7 @@ async function logout() {
   padding: 6px;
   background: var(--panel);
   border: 1px solid var(--line2);
-  border-radius: 10px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
 }
 
@@ -112,7 +135,7 @@ async function logout() {
   min-height: 40px;
   padding: 0 10px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
   color: var(--text);
   text-decoration: none;

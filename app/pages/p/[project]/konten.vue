@@ -76,7 +76,7 @@ const sorted = <A extends { platform: string }>(list: A[]) => byReach(list, a =>
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel2);
   border: 1px solid var(--line);
   font-size: 10.5px;

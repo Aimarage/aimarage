@@ -75,11 +75,25 @@ const meta = computed(() => [s.value.at ? dateTime(s.value.at) : '', s.value.age
 
 .quote {
   margin: 0;
-  padding: 2px 0 2px 12px;
-  border-left: 2px solid var(--line2);
+  position: relative;
+  padding: 2px 0 2px 28px;
+  font-style: italic;
+  color: var(--body);
   white-space: pre-wrap;
   font-size: 14.5px;
   line-height: 1.6;
+}
+
+.quote::before {
+  content: '\201D';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  font-size: 26px;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--dim);
 }
 
 .parent {

@@ -280,7 +280,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
   margin: 12px 16px;
   padding: 12px;
   border: 1px dashed var(--line2);
-  border-radius: 8px;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -321,7 +321,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
   width: 120px;
   height: 90px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel2);
   display: grid;
   place-items: center;
@@ -380,7 +380,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
   gap: 4px;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 4px;
   background: none;
   color: var(--text);
   text-align: left;
@@ -388,7 +388,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
 }
 
 .fpick:hover {
-  border-color: var(--agent);
+  border-color: var(--primary);
 }
 
 .fpick img,
@@ -396,7 +396,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 7px;
+  border-radius: 4px;
   background: var(--panel2);
 }
 

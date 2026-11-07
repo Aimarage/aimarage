@@ -151,44 +151,44 @@ async function markDone(id: string, box?: HTMLInputElement) {
 }
 
 .date {
-  margin: 0 0 12px;
-  font-size: 12.5px;
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-style: italic;
   color: var(--dim);
 }
 
 h1 {
   margin: 0;
-  font-size: 32px;
-  line-height: 1.12;
-  font-weight: 600;
-  letter-spacing: -0.022em;
+  font-size: 52px;
+  line-height: 1;
+  font-weight: var(--head-weight);
+  letter-spacing: var(--head-spacing);
 }
 
 .ai-done {
-  margin: 14px 0 0;
+  margin: 16px 0 0;
   max-width: 64ch;
-  color: var(--text);
-  font-size: 16px;
+  color: var(--body);
+  font-size: 19px;
   line-height: 1.55;
 }
 
 .status {
   margin: 6px 0 0;
-  max-width: 58ch;
-  color: var(--muted);
-  font-size: 16px;
+  max-width: 62ch;
+  color: var(--body);
+  font-size: 19px;
   line-height: 1.55;
 }
 
 .status b {
   color: var(--text);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .strong-link {
-  color: var(--text);
-  font-weight: 500;
-  text-decoration-color: var(--agent);
+  color: var(--primary);
+  font-weight: 600;
   text-underline-offset: 4px;
 }
 
@@ -225,7 +225,7 @@ h1 {
 
 .more {
   margin-left: auto;
-  font-size: 11.5px;
+  font-size: 13px;
   color: var(--dim);
   text-decoration: none;
 }
@@ -233,7 +233,12 @@ h1 {
 /* Handy */
 @media (max-width: 600px) {
   h1 {
-    font-size: 25px;
+    font-size: 38px;
+  }
+
+  .ai-done,
+  .status {
+    font-size: 17px;
   }
 
   .split {

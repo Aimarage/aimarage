@@ -30,6 +30,8 @@ export interface WorkspaceBrand {
   name: string
   logoUrl: string | null
   accent: string | null
+  marker: string | null
+  font: string | null
   replyTo: string | null
   inApp: boolean
 }

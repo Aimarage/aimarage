@@ -185,20 +185,20 @@ const groups = computed(() => {
 
 .scope {
   min-height: 36px;
-  padding: 0 12px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 13px;
+  padding: 0 14px;
+  border-radius: 3px;
+  border: 0;
+  background: transparent;
+  color: var(--body);
+  font-size: 15px;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .scope[aria-selected='true'] {
-  background: var(--text);
-  border-color: var(--text);
-  color: var(--bg);
+  background: var(--marker);
+  color: var(--on-marker);
+  font-weight: 700;
 }
 
 .selects {
@@ -219,7 +219,7 @@ const groups = computed(() => {
   gap: 6px;
   padding-left: 10px;
   border: 1px solid var(--line2);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--panel);
   color: var(--dim);
 }
@@ -256,7 +256,7 @@ const groups = computed(() => {
 }
 
 .grp-head.today {
-  color: var(--agent);
+  color: var(--primary);
 }
 
 .grp-head.late {
@@ -316,7 +316,7 @@ const groups = computed(() => {
 }
 
 .col.over {
-  outline: 2px dashed var(--agent);
+  outline: 2px dashed var(--primary);
   outline-offset: -2px;
 }
 
@@ -342,7 +342,7 @@ const groups = computed(() => {
   padding: 10px 12px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--text);
   text-decoration: none;
   cursor: grab;
