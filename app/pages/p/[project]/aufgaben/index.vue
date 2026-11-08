@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { taskTitle } from '~~/shared/utils/task-title'
 import { CATEGORIES, type TaskStatus } from '~~/shared/utils/domain'
 import type { TaskItem } from '~~/server/services/views'
 
@@ -134,7 +135,7 @@ const groups = computed(() => {
                 <span class="code mono hide-m">{{ it.code }}</span>
                 <PlatformMark v-if="it.platform" :platform="it.platform" :size="16" :missing="it.noTarget" />
                 <span v-else class="pm-gap" />
-                <span class="row-title" :class="{ done: it.state === 'done' }">{{ it.title }}</span>
+                <span class="row-title" :class="{ done: it.state === 'done' }">{{ taskTitle(it.title) }}</span>
                 <span class="row-meta due" :class="{ late: it.overdue }">{{ g.late && it.dueDate !== data.today ? dayDm(it.dueDate!) : it.dueTime ?? '' }}</span>
                 <TaskMark :state="it.state" :next="it.next" :user-id="it.assigneeUserId" :overdue="it.overdue" />
                 <StatusPill :status="it.status" class="hide-m st" />
@@ -153,7 +154,7 @@ const groups = computed(() => {
         <div class="cards">
           <NuxtLink v-for="it in boardItems.get(c)" :key="it.id" :to="`${base}/aufgaben/${it.id}`" class="card" :draggable="canEdit" @dragstart="dragging = it.id" @dragend="dragging = null">
             <span class="card-top"><span class="sq" :style="{ background: color(it) }" /><span class="mono dim small" :class="{ late: it.overdue }">{{ due(it) }}</span><PlatformMark v-if="it.platform" :platform="it.platform" :size="16" :missing="it.noTarget" /><TaskMark :state="it.state" :next="it.next" :user-id="it.assigneeUserId" :overdue="it.overdue" /></span>
-            <span class="card-title">{{ it.title }}</span>
+            <span class="card-title">{{ taskTitle(it.title) }}</span>
           </NuxtLink>
           <p v-if="!boardItems.get(c)!.length" class="hint drop">{{ t('tasks.dropHere') }}</p>
         </div>

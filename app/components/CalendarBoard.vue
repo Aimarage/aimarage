@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { taskTitle } from '~~/shared/utils/task-title'
 import { addDays, addMonths, eachDay, minutesOf, startOfMonth, startOfWeek, timeOf, weekday } from '~~/shared/utils/dates'
 import type { CalView } from '~~/shared/utils/domain'
 import { platformRule } from '~~/shared/utils/social'
@@ -140,7 +141,7 @@ const MARKS = ['forum', 'mail', 'blog', 'directory', 'external']
 function itemLabel(it: TaskItem) {
   const when = it.dueTime ? `${it.dueTime} bis ${timeOf(minutesOf(it.dueTime) + it.durationMin)}` : t('cal.allDay')
   const mark = it.platform && !MARKS.includes(it.platform) ? platformRule(it.platform).label : ''
-  return [it.title, mark, it.noTarget ? t('where.noTarget') : '', when, it.published ? t('cal.published') : (it.state === 'done' ? t('state.done') : t(`next.${it.next}`)), it.overdue ? t('state.overdue') : '', it.preview ? t('cal.preview') : ''].filter(Boolean).join(', ')
+  return [taskTitle(it.title), mark, it.noTarget ? t('where.noTarget') : '', when, it.published ? t('cal.published') : (it.state === 'done' ? t('state.done') : t(`next.${it.next}`)), it.overdue ? t('state.overdue') : '', it.preview ? t('cal.preview') : ''].filter(Boolean).join(', ')
 }
 
 const done = (it: TaskItem) => it.state === 'done'
@@ -250,7 +251,7 @@ function onDropMonth(e: DragEvent, d: string) {
         <div v-for="d in days" :key="d" class="adcell" :class="{ today: d === props.today, drop: dropTarget === `ad:${d}` }" @dragover="onDragOver($event, `ad:${d}`)" @dragleave="dropTarget = null" @drop="onDropAllDay($event, d)">
           <component :is="it.preview ? 'span' : NuxtLink" v-for="it in allDay(d)" :key="it.id" :to="href(it)" class="chip" :class="{ done: done(it), late: it.overdue, preview: it.preview, dragging: dragId === it.id }" :style="chipStyle(it)" :aria-label="itemLabel(it)" :title="itemLabel(it)" :draggable="props.draggable && !it.preview" @dragstart="onDragStart($event, it)" @dragend="onDragEnd">
             <PlatformMark v-if="it.platform" :platform="it.platform" :size="14" :missing="it.noTarget" />
-            <span class="ct ellipsis">{{ it.title }}</span>
+            <span class="ct ellipsis">{{ taskTitle(it.title) }}</span>
             <span v-if="it.published" class="pub" role="img" :title="t('cal.published')" :aria-label="t('cal.published')"><Icon name="check" :size="12" /></span>
             <TaskMark v-else :state="it.state" :next="it.next" :user-id="it.assigneeUserId" :preview="it.preview" />
           </component>
@@ -269,7 +270,7 @@ function onDropMonth(e: DragEvent, d: string) {
             </template>
             <component :is="p.item.preview ? 'span' : NuxtLink" v-for="p in placed.get(d)" :key="p.item.id" :to="href(p.item)" class="ev" :class="{ done: done(p.item), late: p.item.overdue, preview: p.item.preview, dragging: dragId === p.item.id, short: p.height < 26 }" :style="{ ...chipStyle(p.item), top: `${p.top}px`, height: `${p.height}px`, left: `calc(${p.left * 100}% + 4px)`, width: `calc(${p.width * 100}% - 8px)` }" :aria-label="itemLabel(p.item)" :title="itemLabel(p.item)" :draggable="props.draggable && !p.item.preview" @dragstart="onDragStart($event, p.item)" @dragend="onDragEnd">
               <PlatformMark v-if="p.item.platform" :platform="p.item.platform" :size="14" :missing="p.item.noTarget" />
-              <span class="ct ellipsis">{{ p.item.title }}</span>
+              <span class="ct ellipsis">{{ taskTitle(p.item.title) }}</span>
               <span v-if="p.item.published" class="pub" role="img" :title="t('cal.published')" :aria-label="t('cal.published')"><Icon name="check" :size="12" /></span>
               <TaskMark v-else :state="p.item.state" :next="p.item.next" :user-id="p.item.assigneeUserId" :preview="p.item.preview" />
             </component>
@@ -287,7 +288,7 @@ function onDropMonth(e: DragEvent, d: string) {
           <button type="button" class="mday mono" @click="emit('update:anchor', d); emit('update:view', 'day')">{{ Number(d.slice(8, 10)) }}</button>
           <component :is="it.preview ? 'span' : NuxtLink" v-for="it in (byDay.get(d) ?? []).slice(0, 3)" :key="it.id" :to="href(it)" class="chip" :class="{ done: done(it), late: it.overdue, preview: it.preview }" :style="chipStyle(it)" :aria-label="itemLabel(it)" :draggable="props.draggable && !it.preview" @dragstart="onDragStart($event, it)" @dragend="onDragEnd">
             <PlatformMark v-if="it.platform" :platform="it.platform" :size="14" :missing="it.noTarget" />
-            <span class="ct ellipsis">{{ it.title }}</span>
+            <span class="ct ellipsis">{{ taskTitle(it.title) }}</span>
             <span v-if="it.published" class="pub" role="img" :title="t('cal.published')" :aria-label="t('cal.published')"><Icon name="check" :size="12" /></span>
             <TaskMark v-else :state="it.state" :next="it.next" :user-id="it.assigneeUserId" :preview="it.preview" />
           </component>
@@ -308,7 +309,7 @@ function onDropMonth(e: DragEvent, d: string) {
           <span class="mtime mono" :class="{ late: it.overdue }">{{ it.dueTime ?? t('cal.allDay') }}</span>
           <span class="mchip" :class="{ done: done(it), late: it.overdue, preview: it.preview }" :style="chipStyle(it)">
             <PlatformMark v-if="it.platform" :platform="it.platform" :size="14" :missing="it.noTarget" />
-            <span class="ct ellipsis">{{ it.title }}</span>
+            <span class="ct ellipsis">{{ taskTitle(it.title) }}</span>
             <span v-if="it.published" class="pub" role="img" :title="t('cal.published')" :aria-label="t('cal.published')"><Icon name="check" :size="12" /></span>
             <TaskMark v-else :state="it.state" :next="it.next" :user-id="it.assigneeUserId" :preview="it.preview" />
           </span>

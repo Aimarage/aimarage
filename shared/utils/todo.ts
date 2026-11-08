@@ -34,6 +34,7 @@ export interface TodoFacts {
   humanStep?: string | null
   estimateMin?: number | null
   doneAt?: string | null
+  doneBy?: string | null
   posted?: boolean
   sent?: boolean
   account?: string | null
@@ -82,6 +83,8 @@ export function todoOf(f: TodoFacts): Todo {
   if (f.status === 'verworfen') return nothing('dropped')
   if (f.status === 'erledigt' || f.status === 'ausgewertet' || ((f.posted || f.sent) && !!f.doneAt)) {
     const how = f.sent ? 'sent' : f.posted ? 'posted' : 'plain'
+    const who = f.doneBy?.trim()
+    if (who) return { ...base, key: f.doneAt ? `done.${how}By` : 'done.anyBy', params: { who }, doneAt: f.doneAt ?? null }
     return { ...base, key: f.doneAt ? `done.${how}` : 'done.any', doneAt: f.doneAt ?? null }
   }
   if (f.draft === 'gone') return nothing('gone')

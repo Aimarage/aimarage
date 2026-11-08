@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { taskTitle } from '~~/shared/utils/task-title'
 import type { TaskItem } from '~~/server/services/views'
 import type { AccessProblem } from '~~/shared/utils/access'
 
@@ -35,10 +36,10 @@ const claude = computed(() => props.items.filter(it => it.forClaude))
     </ul>
     <ul v-if="mine.length" class="rows">
       <li v-for="it in mine" :key="it.id" class="tl">
-        <input type="checkbox" :aria-label="t('dash.markDone', { title: it.title })" :disabled="!canEdit" class="chk" @change="emit('done', it.id, $event.target as HTMLInputElement)">
+        <input type="checkbox" :aria-label="t('dash.markDone', { title: taskTitle(it.title) })" :disabled="!canEdit" class="chk" @change="emit('done', it.id, $event.target as HTMLInputElement)">
         <NuxtLink :to="`${props.base}/aufgaben/${it.id}`" class="row-link">
           <span class="sq" :style="{ background: projectColor(it.projectId) }" />
-          <span class="row-title">{{ it.title }}</span>
+          <span class="row-title">{{ taskTitle(it.title) }}</span>
           <TaskMark :state="it.state" :next="it.next" :user-id="it.assigneeUserId" :overdue="it.overdue" />
           <span class="row-meta m" :class="meta(it).cls" :title="meta(it).title">{{ meta(it).text }}</span>
           <span class="dim chev"><Icon name="chevron-right" /></span>
@@ -53,7 +54,7 @@ const claude = computed(() => props.items.filter(it => it.forClaude))
         <li v-for="it in claude" :key="it.id" class="tl">
           <NuxtLink :to="`${props.base}/aufgaben/${it.id}`" class="row-link">
             <span class="sq" :style="{ background: projectColor(it.projectId) }" />
-            <span class="row-title">{{ it.title }}</span>
+            <span class="row-title">{{ taskTitle(it.title) }}</span>
             <span class="dim chev"><Icon name="chevron-right" /></span>
           </NuxtLink>
         </li>

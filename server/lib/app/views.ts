@@ -160,14 +160,32 @@ export function aiTodayText(l: Lang, claude: number, agent: number): string | nu
   return null
 }
 
-// Statt "nichts zu tun", wenn Freigaben auf später warten: heute nichts fällig, so viele warten, ab wann die nächste dran ist.
+// Statt "nichts zu tun": heute nichts fällig, wie viele später auf dich warten (Bald dran) und wie viele Claude prüft, je mit nächstem Tag.
 export function waitingText(l: Lang, d: string, w: Waiting): string {
   const head = weekday(d) >= 6 ? tx(l, 'Wochenende, heute nichts fällig.', 'Weekend, nothing due today.') : tx(l, 'Heute nichts fällig.', 'Nothing due today.')
-  const n = w.approvals === 1 ? tx(l, '1 Freigabe wartet', '1 approval waiting') : tx(l, `${w.approvals} Freigaben warten`, `${w.approvals} approvals waiting`)
-  const info = !w.info ? '' : w.info === 1 ? tx(l, ', 1 braucht Infos von dir', ', 1 needs info from you') : tx(l, `, ${w.info} brauchen Infos von dir`, `, ${w.info} need info from you`)
-  const k = w.next ? daysUntil(d, w.next) : 0
-  const day = !w.next || k < 1 ? '' : k === 1 ? tx(l, 'morgen', 'tomorrow') : k < 7 ? shortDay(w.next, l).split(' ')[0]! : shortDay(w.next, l)
-  return `${head} ${n}${info}${day ? tx(l, ` (nächste fällig ${day})`, ` (next due ${day})`) : ''}.`
+  const dayOf = (x: string | null) => {
+    if (!x) return ''
+    const k = daysUntil(d, x)
+    return k <= 0 ? tx(l, 'heute', 'today') : k === 1 ? tx(l, 'morgen', 'tomorrow') : k < 7 ? shortDay(x, l).split(' ')[0]! : shortDay(x, l)
+  }
+  const parts = [head]
+  if (w.soon) {
+    const n = w.soon === 1 ? tx(l, '1 Freigabe wartet auf dich', '1 approval waiting for you') : tx(l, `${w.soon} Freigaben warten auf dich`, `${w.soon} approvals waiting for you`)
+    const info = !w.info ? '' : w.info === 1 ? tx(l, ', 1 braucht Infos von dir', ', 1 needs info from you') : tx(l, `, ${w.info} brauchen Infos von dir`, `, ${w.info} need info from you`)
+    const day = dayOf(w.next)
+    parts.push(`${n}${info}${day ? tx(l, ` (nächste fällig ${day})`, ` (next due ${day})`) : ''}.`)
+  }
+  if (w.claude) {
+    const one = w.claude === 1
+    const n = one ? tx(l, 'Claude prüft 1 Entwurf', 'Claude is checking 1 draft') : tx(l, `Claude prüft ${w.claude} Entwürfe`, `Claude is checking ${w.claude} drafts`)
+    const day = dayOf(w.claudeNext)
+    const next = !day ? '' : one ? tx(l, ` (fällig ${day})`, ` (due ${day})`) : tx(l, ` (nächster fällig ${day})`, ` (next due ${day})`)
+    const rest = one
+      ? tx(l, ', ist er am Fälligkeitstag nicht freigegeben, bist du dran.', '; if it is not approved by its due day, it is your turn.')
+      : tx(l, ', was am Fälligkeitstag nicht freigegeben ist, gibst du frei.', '; whatever is not approved by its due day, you approve.')
+    parts.push(`${n}${next}${rest}`)
+  }
+  return parts.join(' ')
 }
 
 export async function appDashboard(c: AppCtx, project: Project | null) {
@@ -192,7 +210,6 @@ export async function appDashboard(c: AppCtx, project: Project | null) {
   const isOpenDraft = (r: typeof rows[number]) => r.view.who === 'you' && r.view.draft && OPEN_NEXT.includes(r.view.next)
   const drafts = rows.filter(isOpenDraft)
   const todos: AppTodo[] = []
-  const mineAll = all.filter(r => !r.view.userId || r.view.userId === c.s.user.id)
   const draftTitle = (n: number) => n === 1 ? tx(l, '1 Entwurf freigeben', 'Approve 1 draft') : tx(l, `${n} Entwürfe freigeben`, `Approve ${n} drafts`)
   // Bei "Alle Projekte" eine Freigaben-Zeile je Projekt, damit man sieht, wo es wartet.
   const groups = project ? [{ slug: project.slug, list: drafts }] : projects.map(p => ({ slug: p.slug, list: drafts.filter(r => r.task.projectId === p.id) })).filter(g => g.list.length)
@@ -210,7 +227,8 @@ export async function appDashboard(c: AppCtx, project: Project | null) {
     todos.push({ id: r.task.id, taskId: r.task.id, title: r.task.title, minutes: Math.max(1, r.view.min), kind: r.view.next === 'answer' ? 'question' : 'task', detail: safeDetail(l, ask ?? (r.task.humanStep || r.task.description?.slice(0, 400) || null)), projectId: r.task.projectId ? slugOf.get(r.task.projectId) ?? null : null, approvalId: r.view.draftId })
   }
 
-  const later = todos.length ? null : waitingLater(mineAll.map(r => r.view))
+  // Wie die Gruppen "Bald dran" und "Claude prüft" der App-Freigaben (nur offene Entwürfe, ohne Filter nach Person).
+  const later = todos.length ? null : waitingLater(all.map(r => r.view), { openOnly: true })
   const traffic = await utmSummary(c.db, c.s.workspace.id, projects.map(p => p.id), addDays(d, -7), addDays(d, -1))
   const top = traffic.sources.filter(s => s.visits > 0).sort((a, b) => b.visits - a.visits)[0]
   const agentSentence = top

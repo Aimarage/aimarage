@@ -12,7 +12,7 @@ import { listGoals } from '../goals'
 import { cancelPosts, withUtm } from '../publish'
 import { activeStrategy, pendingProposal, strategyHistory } from '../strategy'
 import { experimentsView, MAX_EXTENSIONS, MIN_PER_ARM, strategyWeeks, THRESHOLD } from '../experiments'
-import { listTasks as queryTasks, updateTask as patchTask } from '../tasks'
+import { listTasks as queryTasks, TransitionError, updateTask as patchTask } from '../tasks'
 import { endRecurrence, loadRecurrence } from '../recurrences'
 import { applyDraftAction, DraftStateError } from '../../services/drafts'
 import { calendarView } from '../../services/views'
@@ -119,7 +119,7 @@ export async function claudeTasks(db: Db, actor: ChatActor, project?: string | n
   )).orderBy(schema.tasks.dueDate, schema.tasks.prio, schema.tasks.code).limit(50)
   const slugs = slugMap(await visibleProjects(db, actor))
   return {
-    hint: 'Auftrag steht in description. Umsetzen, veröffentlichen, dann mit aufgabe_status auf erledigt setzen.',
+    hint: 'Auftrag steht in description. Umsetzen, veröffentlichen, dann mit aufgabe_status auf erledigt setzen, mit notiz, was gemacht wurde.',
     tasks: rows.filter(t => canSeeProject(actor.access, t.projectId)).map(t => ({ ...taskOut(t, slugs), prio: t.prio, targetUrl: t.targetUrl, description: t.description })),
   }
 }
@@ -263,17 +263,41 @@ export async function planRelease(db: Db, actor: ChatActor, input: { project: st
   return r.created ? { ...r, note: `Angelegt. Entwürfe landen in den Freigaben. ${NO_OUTSIDE}` } : r
 }
 
-export async function updateTask(db: Db, actor: ChatActor, code: string, input: { date?: string | null, time?: string | null, title?: string | null, status?: string | null, force?: boolean | null }) {
+export async function updateTask(db: Db, actor: ChatActor, code: string, input: { date?: string | null, time?: string | null, title?: string | null, status?: string | null, force?: boolean | null, note?: string | null }) {
   needWrite(actor)
   const t = await loadTaskByCode(db, actor, code)
-  if (input.status === 'erledigt' && !input.force && isOpenStatus(t.status) && checkKind(t)) {
+  const note = clean(input.note ?? '').trim().slice(0, 2000)
+  const closing = input.status === 'erledigt' && isOpenStatus(t.status)
+  if (closing && !input.force && checkKind(t)) {
     const r = await checkAndClose(db, actor.workspace, t, { type: 'mcp', userId: actor.userId }, { search: true })
     const pruefung = { erledigt: r.ok, punkte: openFirst(r.items).map(i => `${i.done ? 'ok' : 'offen'}: ${i.text}`) }
     if (!r.closed) return { ...(await getTask(db, actor, t.code)), abgehakt: false, pruefung, hinweis: 'Laut Prüfung noch nicht erledigt, die Aufgabe bleibt offen. Erst die offenen Punkte beheben und veröffentlichen; nur wenn sicher erledigt, mit force: true abhaken.' }
+    if (note) await addDoneNote(db, actor, t, note)
     return { ...(await getTask(db, actor, t.code)), abgehakt: true, pruefung }
   }
-  await tool(db, actor, 'update_task', { code: t.code, date: input.date ?? undefined, time: input.time === null ? '' : input.time ?? undefined, title: input.title ?? undefined, status: input.status ?? undefined })
+  const rest = { date: input.date ?? undefined, time: input.time === null ? '' : input.time ?? undefined, title: input.title ?? undefined }
+  if (closing) {
+    if (Object.values(rest).some(v => v !== undefined)) await tool(db, actor, 'update_task', { code: t.code, ...rest })
+    const cur = await loadTaskByCode(db, actor, t.code)
+    try {
+      await patchTask(db, cur, { status: 'erledigt' }, { type: 'mcp', userId: actor.userId })
+    }
+    catch (err) {
+      if (err instanceof TransitionError) throw new ApiError(409, err.message)
+      throw err
+    }
+    if (note) await addDoneNote(db, actor, cur, note)
+    return getTask(db, actor, t.code)
+  }
+  await tool(db, actor, 'update_task', { code: t.code, ...rest, status: input.status ?? undefined })
+  if (note && input.status === 'erledigt') await addDoneNote(db, actor, t, note)
   return getTask(db, actor, t.code)
+}
+
+// Notiz von Claude beim Erledigen: steht danach in der Aufgabe unter "Erledigt" als "Was gemacht wurde".
+async function addDoneNote(db: Db, actor: ChatActor, t: { id: string, projectId: string | null, title: string }, text: string) {
+  await db.insert(schema.taskNotes).values({ taskId: t.id, userId: actor.userId, text })
+  await logActivity(db, { workspaceId: actor.workspace.id, projectId: t.projectId, taskId: t.id, actor: 'mcp', userId: actor.userId, action: 'note_added', detail: { title: t.title, via: 'mcp' } })
 }
 
 // Ziel einer Aufgabe setzen: Link (Thread, Subreddit, Verzeichnis, Seite) und/oder Ort im Kanal (z.B. r/aiMusic). Offene Entwürfe bekommen den Link mit.

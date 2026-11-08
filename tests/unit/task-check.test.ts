@@ -207,4 +207,15 @@ describe('Prüfen und abhaken', () => {
       globalThis.fetch = real
     }
   })
+
+  it('MCP aufgabe_status erledigt mit notiz: Claude als Erlediger, Notiz gespeichert', async () => {
+    const t = await task({ title: 'Impressum ergänzen' })
+    const actor = { workspace: ws, userId: user, userName: 'Peter', role: 'owner' as const, access: { all: true, ids: [] } }
+    await svcUpdateTask(db, actor, t.code, { status: 'erledigt', force: true, note: 'Impressum um UID ergänzt \u2013 Commit abc123.' })
+    expect((await reload(t.id)).status).toBe('erledigt')
+    const ev = (await db.select().from(schema.activity).where(eq(schema.activity.taskId, t.id))).find(a => a.action === 'status:erledigt')
+    expect(ev?.actor).toBe('mcp')
+    const notes = await db.select().from(schema.taskNotes).where(eq(schema.taskNotes.taskId, t.id))
+    expect(notes.map(n => n.text)).toEqual(['Impressum um UID ergänzt - Commit abc123.'])
+  })
 })

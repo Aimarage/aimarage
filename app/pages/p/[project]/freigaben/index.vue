@@ -145,6 +145,20 @@ const items = computed(() => {
   return sorted.value.filter(a => [a.title, a.code, projectById(a.projectId)?.name ?? ''].some(f => norm(f).includes(n)))
 })
 const todoCount = computed(() => data.value.items.length + data.value.proposals.length)
+
+// ?abschnitt=dran|claude|bald (Links vom Dashboard): Abschnitt aufklappen und hinscrollen.
+const route = useRoute()
+async function openSection() {
+  const id = route.query.abschnitt
+  if (typeof id !== 'string' || !['dran', 'claude', 'bald'].includes(id)) return
+  await nextTick()
+  const el = document.getElementById(`abschnitt-${id}`)
+  if (!el) return
+  if (el instanceof HTMLDetailsElement) el.open = true
+  el.scrollIntoView({ block: 'start' })
+}
+onMounted(openSection)
+watch(() => route.query.abschnitt, openSection)
 </script>
 
 <template>
@@ -155,7 +169,7 @@ const todoCount = computed(() => data.value.items.length + data.value.proposals.
         <h1>{{ t('approvals.title') }}</h1>
       </div>
     </div>
-    <section class="panel">
+    <section id="abschnitt-dran" class="panel">
       <div class="panel-head">
         <h2>{{ t('approvals.todo') }}</h2><span class="count">{{ todoCount }}</span>
         <label v-if="data.items.length > 8" class="search"><Icon name="search" /><input v-model="q" class="input" type="search" :placeholder="t('approvals.search')" :aria-label="t('approvals.search')"></label>
@@ -207,7 +221,7 @@ const todoCount = computed(() => data.value.items.length + data.value.proposals.
         <button type="button" class="btn ghost small" :disabled="busy" @click="experiment(e, 'reject')">{{ t('experiments.reject') }}</button>
       </div>
     </section>
-    <details v-if="data.claude.length" class="panel fold">
+    <details v-if="data.claude.length" id="abschnitt-claude" class="panel fold">
       <summary class="panel-head"><Icon name="chevron-right" class="caret" /><h2>{{ t('approvals.claudeTitle') }}</h2><span class="count">{{ data.claude.length }}</span></summary>
       <p class="fold-hint">{{ t('approvals.claudeHint') }}</p>
       <ul class="rows">
@@ -224,7 +238,7 @@ const todoCount = computed(() => data.value.items.length + data.value.proposals.
         </li>
       </ul>
     </details>
-    <details v-if="data.soon.length" class="panel fold">
+    <details v-if="data.soon.length" id="abschnitt-bald" class="panel fold">
       <summary class="panel-head"><Icon name="chevron-right" class="caret" /><h2>{{ t('todo.soon') }}</h2><span class="count">{{ data.soon.length }}</span></summary>
       <ul class="rows">
         <li v-for="o in data.soon" :key="o.draftId">
@@ -376,6 +390,10 @@ const todoCount = computed(() => data.value.items.length + data.value.proposals.
 }
 
 /* Zuklappbare Bereiche */
+[id^='abschnitt-'] {
+  scroll-margin-top: 16px;
+}
+
 .fold > summary {
   cursor: pointer;
   list-style: none;

@@ -398,7 +398,7 @@ export async function checkAndClose(db: DbOrTx, ws: Workspace, task: TaskRow, ac
   if (!r.ok || !OPEN_STATUSES.includes(task.status)) return { ...r, closed: false }
   const patch: Parameters<typeof updateTask>[2] = { status: 'erledigt' }
   if (r.postedUrl && r.postedUrl !== task.postedUrl) patch.postedUrl = r.postedUrl
-  await updateTask(db, task, patch, { type: actor.type === 'mcp' ? 'agent' : actor.type, userId: actor.userId ?? null })
+  await updateTask(db, task, patch, { type: actor.type, userId: actor.userId ?? null })
   await logActivity(db, { workspaceId: task.workspaceId, projectId: task.projectId, taskId: task.id, actor: actor.type, userId: actor.userId ?? null, action: opts.auto ? 'task_checked_auto' : 'task_checked', detail: { title: task.title, items: r.items.map(i => i.text).slice(0, 10) } })
   return { ...r, closed: true }
 }

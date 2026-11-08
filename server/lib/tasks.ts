@@ -73,7 +73,7 @@ export function websiteOrder(site: string | null, code: string, intro: string, l
     `Im Code der Website${site ? ` ${site}` : ''}: ${intro}`,
     ...shown.map(l => `- ${l}`),
     lines.length > shown.length ? `- und ${lines.length - shown.length} weitere Seiten (gleiche Regel)` : '',
-    `Nur das ändern, dann veröffentlichen. Danach Aufgabe ${code} in Aimarage erledigen (MCP: aufgabe_status).`,
+    `Nur das ändern, dann veröffentlichen. Danach Aufgabe ${code} in Aimarage erledigen (MCP: aufgabe_status mit notiz, was gemacht wurde).`,
   ].filter(Boolean).join('\n')
 }
 
@@ -124,7 +124,7 @@ export class TransitionError extends Error {}
 
 const TRACKED: (keyof TaskPatch)[] = ['title', 'dueDate', 'dueTime', 'status', 'assigneeUserId', 'prio', 'category', 'projectId', 'postedUrl']
 
-export async function updateTask(db: DbOrTx, task: TaskRow, patch: TaskPatch, actor: { type: 'user' | 'agent' | 'system', userId?: string | null }, opts: { spread?: boolean } = {}): Promise<TaskRow> {
+export async function updateTask(db: DbOrTx, task: TaskRow, patch: TaskPatch, actor: { type: 'user' | 'agent' | 'system' | 'mcp', userId?: string | null }, opts: { spread?: boolean } = {}): Promise<TaskRow> {
   if (patch.status && !canTransition(task.status, patch.status)) throw new TransitionError(`Status ${task.status} -> ${patch.status} nicht erlaubt`)
   const set: Partial<typeof schema.tasks.$inferInsert> = { ...patch, updatedAt: now() }
   if (patch.status && patch.status !== task.status) {

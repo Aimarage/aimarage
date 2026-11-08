@@ -94,13 +94,16 @@ export function forYouNow(v: Pick<TaskView, 'who' | 'now' | 'then'>): boolean {
   return (v.who === 'you' || v.then === 'post') && v.now
 }
 
-// Offene Entwürfe, die noch nicht heute dran sind: so viele Freigaben warten, davon Rückfragen, ab wann die nächste dran ist.
-export interface Waiting { approvals: number, info: number, next: string | null }
-export function waitingLater(views: TaskView[]): Waiting | null {
-  const list = views.filter(v => v.draft && !forYouNow(v) && (v.next === 'answer' || v.next === 'approve' || v.next === 'review' || v.next === 'claudeChecks'))
-  if (!list.length) return null
-  const days = list.map(v => v.visibleFrom ?? v.date).filter((x): x is string => !!x).sort()
-  return { approvals: list.length, info: list.filter(v => v.next === 'answer').length, next: days[0] ?? null }
+// Entwürfe, die nicht heute auf dich warten, genau wie die Abschnitte der Freigaben-Seite gezählt:
+// soon = "Kommt bald" (davon info Rückfragen, next = nächster Tag), claude = "Claude prüft" (claudeNext = nächster Fälligkeitstag).
+// openOnly: nur offene Entwürfe (App-Freigaben zeigen freigegebene Selbst-Posts nicht unter "Bald dran").
+export interface Waiting { soon: number, info: number, next: string | null, claude: number, claudeNext: string | null }
+export function waitingLater(views: TaskView[], opts: { openOnly?: boolean } = {}): Waiting | null {
+  const soon = views.filter(v => v.draft && v.bucket === 'soon' && (!opts.openOnly || v.next !== 'post'))
+  const claude = views.filter(v => v.draft && v.bucket === 'claude')
+  if (!soon.length && !claude.length) return null
+  const first = (list: TaskView[]) => list.map(v => v.visibleFrom ?? v.date).filter((x): x is string => !!x).sort()[0] ?? null
+  return { soon: soon.length, info: soon.filter(v => v.next === 'answer').length, next: first(soon), claude: claude.length, claudeNext: first(claude) }
 }
 
 // Minuten, die die Aufgabe den Menschen kostet (auch nach Claudes Prüfung).

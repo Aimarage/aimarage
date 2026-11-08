@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { TodoView } from '~/composables/useTodo'
 
-defineProps<{ view: TodoView, warn?: boolean, link?: string | null }>()
+const props = defineProps<{ view: TodoView, warn?: boolean, link?: string | null }>()
 const { t } = useI18n()
+const label = computed(() => (props.view.todo.key.startsWith('done.') ? t('todo.done.title') : t('todo.title')))
 </script>
 
 <template>
-  <section class="panel todo" :class="{ quiet: view.todo.main === 'none', warn }" :aria-label="t('todo.title')">
-    <p class="todo-label">{{ t('todo.title') }}</p>
+  <section class="panel todo" :class="{ quiet: view.todo.main === 'none', warn }" :aria-label="label">
+    <p class="todo-label">{{ label }}</p>
     <p class="todo-line">{{ view.line }}<template v-if="link"> <a :href="link" target="_blank" rel="noopener noreferrer" class="todo-link">{{ t('todo.done.view') }}</a></template></p>
     <p v-if="view.sub" class="todo-sub">{{ view.sub }}</p>
     <p v-if="view.flair" class="todo-flair">{{ view.flair }}</p>

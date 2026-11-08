@@ -211,9 +211,32 @@ describe('Heute nichts fällig, aber Freigaben warten', () => {
     ]
     expect(views.filter(forYouNow)).toHaveLength(0)
     const w = waitingLater(views)
-    expect(w).toEqual({ approvals: 3, info: 1, next: '2026-11-02' })
-    expect(waitingText('de', sun.today, w!)).toBe('Wochenende, heute nichts fällig. 3 Freigaben warten, 1 braucht Infos von dir (nächste fällig morgen).')
-    expect(waitingText('de', '2026-10-28', { approvals: 9, info: 4, next: '2026-11-02' })).toBe('Heute nichts fällig. 9 Freigaben warten, 4 brauchen Infos von dir (nächste fällig Mo).')
+    // Der Claude-Entwurf zählt nur unter "Claude prüft", nicht doppelt bei den wartenden Freigaben.
+    expect(w).toEqual({ soon: 2, info: 1, next: '2026-11-02', claude: 1, claudeNext: '2026-11-13' })
+    expect(waitingText('de', sun.today, w!)).toBe('Wochenende, heute nichts fällig. 2 Freigaben warten auf dich, 1 braucht Infos von dir (nächste fällig morgen). Claude prüft 1 Entwurf (fällig Fr 13.11.), ist er am Fälligkeitstag nicht freigegeben, bist du dran.')
+    expect(waitingText('de', '2026-10-28', { soon: 9, info: 4, next: '2026-11-02', claude: 0, claudeNext: null })).toBe('Heute nichts fällig. 9 Freigaben warten auf dich, 4 brauchen Infos von dir (nächste fällig Mo).')
     expect(waitingLater([taskView({ ...base, dueDate: '2026-11-03' }, sun)])).toBeNull()
+  })
+
+  it('Alle wartenden Entwürfe liegen bei Claude: ein Satz, keine "Freigaben warten"', () => {
+    const sat = { today: '2026-11-07', time: '10:00' }
+    const draft: TaskFacts = { ...base, draft: 'open', status: 'entwurf_fertig', goesOut: true, claudeChecks: true }
+    const views = ['2026-11-10', '2026-11-11', '2026-11-12'].map(dueDate => taskView({ ...draft, dueDate }, sat))
+    expect(views.every(v => v.bucket === 'claude')).toBe(true)
+    const w = waitingLater(views)!
+    expect(w).toEqual({ soon: 0, info: 0, next: null, claude: 3, claudeNext: '2026-11-10' })
+    expect(waitingText('de', sat.today, w)).toBe('Wochenende, heute nichts fällig. Claude prüft 3 Entwürfe (nächster fällig Di), was am Fälligkeitstag nicht freigegeben ist, gibst du frei.')
+    expect(waitingText('en', sat.today, w)).toBe('Weekend, nothing due today. Claude is checking 3 drafts (next due Tue); whatever is not approved by its due day, you approve.')
+  })
+
+  it('Kommt bald zählt auch freigegebene Selbst-Posts wie die Freigaben-Seite, openOnly (App) nicht', () => {
+    const mon = { today: '2026-11-09', time: '09:00' }
+    const views = [
+      taskView({ ...base, draft: 'approved', status: 'freigegeben', goesOut: false, dueDate: '2026-11-11' }, mon),
+      taskView({ ...base, draft: 'open', status: 'entwurf_fertig', goesOut: true, dueDate: '2026-11-12' }, mon),
+    ]
+    expect(views.map(v => v.bucket)).toEqual(['soon', 'soon'])
+    expect(waitingLater(views)).toMatchObject({ soon: 2, next: '2026-11-11', claude: 0 })
+    expect(waitingLater(views, { openOnly: true })).toMatchObject({ soon: 1, next: '2026-11-12' })
   })
 })

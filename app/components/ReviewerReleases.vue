@@ -45,7 +45,7 @@ async function stop(r: ReviewerRelease) {
 .rr {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 14px 20px 18px;
   display: grid;
   gap: 10px;
 }
@@ -69,5 +69,12 @@ async function stop(r: ReviewerRelease) {
 .rr-at {
   font-size: 12px;
   color: var(--dim);
+}
+
+@media (max-width: 600px) {
+  .rr {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 </style>

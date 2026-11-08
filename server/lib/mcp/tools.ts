@@ -115,7 +115,7 @@ export const MCP_TOOLS = [
   tool({
     name: 'fuer_claude',
     title: 'Aufgaben für Claude',
-    description: 'Offene Website- und Code-Aufgaben, die Claude (Code) statt des Menschen erledigt, mit kopierfertigem Auftrag in description. Nach dem Umsetzen mit aufgabe_status erledigen.',
+    description: 'Offene Website- und Code-Aufgaben, die Claude (Code) statt des Menschen erledigt, mit kopierfertigem Auftrag in description. Nach dem Umsetzen mit aufgabe_status erledigen, mit notiz, was gemacht wurde.',
     input: { projekt: projektOpt },
     readOnly: true,
     run: (ctx, a) => svc.claudeTasks(ctx.db, ctx.actor, a.projekt),
@@ -318,11 +318,11 @@ export const MCP_TOOLS = [
   tool({
     name: 'aufgabe_status',
     title: 'Aufgabe erledigen oder verwerfen',
-    description: 'Status setzen: erledigt, verworfen oder wieder geplant. Bei prüfbaren Aufgaben (Website-SEO, abgerutschte Seite, Verzeichnis-Eintrag, selbst geposteter Community-Beitrag) prüft erledigt zuerst live (Seiten laden, Eintrag bzw. Beitrag suchen) und hakt nur ab, wenn alles stimmt; sonst bleibt sie offen und pruefung nennt, was fehlt. force: true hakt ohne Prüfung ab.',
-    input: { code, status: z.enum(['erledigt', 'verworfen', 'geplant']), force: z.boolean().optional().describe('Nur bei erledigt: ohne Prüfung abhaken') },
+    description: 'Status setzen: erledigt, verworfen oder wieder geplant. Bei prüfbaren Aufgaben (Website-SEO, abgerutschte Seite, Verzeichnis-Eintrag, selbst geposteter Community-Beitrag) prüft erledigt zuerst live (Seiten laden, Eintrag bzw. Beitrag suchen) und hakt nur ab, wenn alles stimmt; sonst bleibt sie offen und pruefung nennt, was fehlt. force: true hakt ohne Prüfung ab. Bei erledigt bitte immer notiz mitgeben: in 1-2 Sätzen, was du konkret gemacht hast (z.B. welche Seite, was geändert, Commit oder Link). Die Person sieht das in der Aufgabe unter "Erledigt".',
+    input: { code, status: z.enum(['erledigt', 'verworfen', 'geplant']), force: z.boolean().optional().describe('Nur bei erledigt: ohne Prüfung abhaken'), notiz: z.string().trim().max(2000).optional().describe('Bei erledigt: kurz, was gemacht wurde (1-2 Sätze, gern mit Commit oder Link)') },
     readOnly: false,
     destructive: true,
-    run: (ctx, a) => svc.updateTask(ctx.db, ctx.actor, a.code, { status: a.status, force: a.force }),
+    run: (ctx, a) => svc.updateTask(ctx.db, ctx.actor, a.code, { status: a.status, force: a.force, note: a.notiz }),
   }),
   tool({
     name: 'serie_beenden',

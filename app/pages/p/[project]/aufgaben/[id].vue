@@ -13,6 +13,9 @@ import { postErrorText } from '~~/shared/utils/post-errors'
 import { openFirst, type CheckItem } from '~~/shared/utils/task-check'
 import type { TaskService } from '~~/shared/utils/service'
 import { sourceRest, type ReplySource } from '~~/shared/utils/reply-source'
+import { doneInfo } from '~~/shared/utils/done-info'
+import type { TodoFacts } from '~~/shared/utils/todo'
+import { taskTitle } from '~~/shared/utils/task-title'
 
 interface Detail {
   task: {
@@ -55,7 +58,7 @@ const id = computed(() => String(route.params.id))
 
 const { data, refresh, error } = await useFetch<Detail>(() => `/api/tasks/${id.value}`, { key: computed(() => `task:${id.value}`) })
 if (error.value) throw createError({ statusCode: 404, statusMessage: t('tasks.empty') })
-useHead({ title: computed(() => data.value?.task.title ?? '') })
+useHead({ title: computed(() => (data.value ? taskTitle(data.value.task.title) : '')) })
 
 const task = computed(() => data.value!.task)
 const panel = useChatPanel()
@@ -134,12 +137,18 @@ const acts = computed<Act[]>(() => {
 const finished = computed(() => ['erledigt', 'ausgewertet'].includes(task.value.status))
 const target = computed(() => postTarget([task.value.targetUrl, where.value.url], where.value))
 const infoOpen = computed(() => !!openDraft.value && draftChecks(data.value!.notes, openDraft.value.createdAt).some(c => c.kind === 'info'))
+const done = computed(() => (finished.value ? doneInfo(data.value!.history, notes.value, task.value.doneAt) : null))
+const doneBy = computed(() => {
+  const d = done.value
+  if (!d?.actor) return null
+  return d.actor === 'user' ? memberById(d.userId)?.name ?? null : t(`todo.done.who.${d.actor}`)
+})
 const todoFor = useTodo()
-const todo = computed(() => {
+const facts = computed((): TodoFacts => {
   const x = task.value
   const f = data.value!.todo
   const future = !!outlet.value.at && new Date(outlet.value.at).getTime() > Date.now()
-  return todoFor({
+  return {
     status: x.status,
     category: x.category,
     draftKind: curDraft.value?.kind ?? x.draftKind,
@@ -166,11 +175,14 @@ const todo = computed(() => {
     humanStep: x.humanStep,
     estimateMin: x.estimateMin,
     doneAt: x.doneAt,
+    doneBy: doneBy.value,
     posted: !!x.postedUrl || links.value.length > 0,
     sent: x.draftKind === 'mail' && !!x.doneAt,
     sweep: f.sweep,
-  })
+  }
 })
+const todo = computed(() => todoFor(facts.value))
+const firstTodo = computed(() => (done.value ? todoFor({ ...facts.value, status: done.value.from ?? 'geplant', agentBusy: false, doneAt: null, doneBy: null, posted: false, sent: false }) : null))
 const doneLink = computed(() => (todo.value.todo.key.startsWith('done.') ? safeHttpUrl(task.value.postedUrl) ?? links.value[0]?.href ?? null : null))
 const primary = computed<Act | null>(() => {
   const m = todo.value.todo.main
@@ -505,7 +517,7 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
     <div>
       <p class="crumbs"><NuxtLink :to="`${base}/aufgaben`">{{ t('task.back') }}</NuxtLink> / {{ task.code }}</p>
       <div class="page-head">
-        <h1>{{ task.title }}</h1>
+        <h1>{{ taskTitle(task.title) }}</h1>
       </div>
       <div class="sub">
         <StatusPill :status="task.status" />
@@ -516,7 +528,18 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
       </div>
     </div>
 
-    <TodoBox :view="todo" :link="doneLink" :warn="!!lead?.warn || where.missing">
+    <TodoBox :view="firstTodo ?? todo" :link="firstTodo ? null : doneLink" :warn="!firstTodo && (!!lead?.warn || where.missing)">
+      <div v-if="done" class="done-info">
+        <p class="done-line"><Icon name="check" :size="14" />{{ todo.line }}<template v-if="doneLink"> <a :href="doneLink" target="_blank" rel="noopener noreferrer">{{ t('todo.done.view') }}</a></template></p>
+        <p v-if="done.note" class="done-what"><b>{{ t('todo.done.what') }}</b> {{ done.note }}</p>
+        <template v-else-if="done.checked.length">
+          <p class="done-what"><b>{{ t('todo.done.checked') }}</b></p>
+          <ul class="done-checked">
+            <li v-for="c in done.checked" :key="c">{{ c }}</li>
+          </ul>
+        </template>
+        <p v-else class="done-what">{{ t('todo.done.noNote') }}</p>
+      </div>
       <div v-if="canEdit && (visible.length || more.length)" class="actionbar">
         <button v-for="a in visible" :key="a" type="button" class="btn primary" :disabled="busy || (a === 'agentDraft' && data.agentBusy) || (!!todo.todo.waitDay && (a === 'copyOpen' || a === 'copy'))" @click="run(a)"><Icon :name="ACT_ICON[a]" />{{ actLabel(a) }}</button>
         <div v-if="more.length" ref="menuRoot" class="more">
@@ -760,6 +783,35 @@ const who = (actor: string, userId: string | null) => (actor === 'agent' ? t('ta
   margin: 0;
   font-size: 13.5px;
   color: var(--warn);
+}
+
+.done-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px;
+  color: var(--body);
+}
+
+.done-info p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.done-checked {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.done-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
 }
 
 .stale {

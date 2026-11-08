@@ -2,6 +2,7 @@ import { and, eq, gte, inArray, like, or } from 'drizzle-orm'
 import { z } from 'zod'
 import { addDays } from '../../shared/utils/dates'
 import { CATEGORY_CODES, OPEN_STATUSES } from '../../shared/utils/domain'
+import { pageLabel } from '../../shared/utils/task-title'
 import { now, today } from './clock'
 import type { Db } from './db'
 import { schema } from './db'
@@ -635,7 +636,7 @@ export async function seoTasks(db: Db, ws: Workspace, project: Project, audit: S
       workspaceId: ws.id,
       projectId: project.id,
       code,
-      title: `${pathOf(drop.page)} überarbeiten: in ${engine} abgerutscht`.slice(0, 200),
+      title: `${pageLabel(pathOf(drop.page))} überarbeiten: in ${engine} abgerutscht`.slice(0, 200),
       description: [
         `Die Seite ist in der ${engine}-Suche von Position ${before} auf ${after} gefallen (letzte 2 Wochen gegen die 2 davor).`,
         websiteOrder(project.url, code, `Seite inhaltlich auffrischen, sie ist in ${engine} abgerutscht: aktuelle Angaben, fehlende Fragen der Besucher beantworten, Seitentitel und Meta-Beschreibung prüfen.`, [drop.page]),

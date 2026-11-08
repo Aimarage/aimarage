@@ -15,7 +15,7 @@ interface Dashboard {
   now: string
   kpis: { projectId: string, key: string, label: string, value: number | null, prev: number | null, change: number | null, series: (number | null)[] }[]
   kpiDay: string
-  status: { approvals: number, approvalId?: string | null, later?: Waiting | null, approvedUntil?: string | null, overdue: number, minutes: number, afterCheck?: { title: string, time: string | null, min: number }[], claudeChecking?: number, access?: AccessProblem[], budget: number, visitors: number | null, visitorsChange: number | null }
+  status: { approvals: number, approvalId?: string | null, waiting?: Waiting | null, approvedUntil?: string | null, overdue: number, minutes: number, afterCheck?: { title: string, time: string | null, min: number }[], access?: AccessProblem[], budget: number, visitors: number | null, visitorsChange: number | null }
   done: Record<'ai' | 'claude' | 'you', Record<DoneKey, number>>
   today_tasks: TaskItem[]
   feed: { id: string, at: string, action: string, projectId: string | null, taskId: string | null, detail: Record<string, unknown> }[]
@@ -37,12 +37,23 @@ useHead({ title: computed(() => project.value?.name ?? t('nav.allProjects')) })
 
 const { data, refresh } = await useFetch<Dashboard>('/api/dashboard', { query, key: computed(() => `dash:${query.value.project ?? 'alle'}`) })
 const cal = useCalendar()
-const laterText = computed(() => {
-  const w = data.value?.status.later
-  if (!w || !data.value) return ''
-  const k = w.next ? daysUntil(data.value.today, w.next) : 0
-  const day = !w.next || k < 1 ? '' : k === 1 ? t('approvals.due.tomorrow') : k < 7 ? dayShort(w.next) : dayDm(w.next)
-  return `${t('dash.laterWaiting', w.approvals, { named: { n: w.approvals } })}${w.info ? t('dash.laterInfo', w.info, { named: { n: w.info } }) : ''}${day ? t('dash.laterNext', { day }) : ''}`
+const dueDay = (d: string | null) => {
+  if (!d || !data.value) return ''
+  const k = daysUntil(data.value.today, d)
+  return k <= 0 ? t('approvals.due.today') : k === 1 ? t('approvals.due.tomorrow') : k < 7 ? dayShort(d) : dayDm(d)
+}
+const waiting = computed(() => data.value?.status.waiting ?? null)
+const soonText = computed(() => {
+  const w = waiting.value
+  if (!w?.soon) return ''
+  const day = dueDay(w.next)
+  return `${t('dash.soonWaiting', w.soon, { named: { n: w.soon } })}${w.info ? t('dash.laterInfo', w.info, { named: { n: w.info } }) : ''}${day ? t('dash.laterNext', { day }) : ''}`
+})
+const claudeText = computed(() => {
+  const w = waiting.value
+  if (!w?.claude) return ''
+  const day = dueDay(w.claudeNext)
+  return `${t('dash.claudeChecking', w.claude, { named: { n: w.claude } })}${day ? ` ${t('dash.claudeNext', w.claude, { named: { day } })}` : ''}`
 })
 
 const greeting = computed(() => {
@@ -89,13 +100,13 @@ async function markDone(id: string, box?: HTMLInputElement) {
       <p v-if="doneList" class="ai-done">{{ t('dash.sinceYesterday', { list: doneList }) }} <NuxtLink :to="`${base}/verlauf`">{{ t('dash.history') }}</NuxtLink></p>
       <p class="status">
         <span v-if="data.status.minutes">{{ t('dash.forYou', data.status.minutes, { named: { min: data.status.minutes } }) }}</span>
-        <template v-else-if="data.status.later">{{ t(weekday(data.today) >= 6 ? 'dash.nothingDueWeekend' : 'dash.nothingDue') }}{{ ' ' }}<NuxtLink :to="`${base}/freigaben`" class="strong-link">{{ laterText }}</NuxtLink>.</template>
+        <template v-else-if="waiting">{{ t(weekday(data.today) >= 6 ? 'dash.nothingDueWeekend' : 'dash.nothingDue') }}<template v-if="soonText">{{ ' ' }}<NuxtLink :to="`${base}/freigaben?abschnitt=bald`" class="strong-link">{{ soonText }}</NuxtLink>.</template></template>
         <span v-else>{{ t('dash.forYouNothing') }}</span>
         <template v-for="a in data.status.access ?? []" :key="a.key">{{ ' ' }}<NuxtLink :to="a.path" class="late-link">{{ t('dash.accessLine', { what: a.what, project: a.projectName ? ` (${a.projectName})` : '' }) }}</NuxtLink></template>
-        <span v-if="data.status.claudeChecking">{{ ' ' }}{{ t('dash.claudeChecking', data.status.claudeChecking, { named: { n: data.status.claudeChecking } }) }}</span>
+        <template v-if="claudeText">{{ ' ' }}<NuxtLink :to="`${base}/freigaben?abschnitt=claude`" class="strong-link">{{ claudeText }}</NuxtLink>{{ t('dash.claudeRest', waiting?.claude ?? 0) }}</template>
         <span v-for="a in data.status.afterCheck ?? []" :key="a.title">{{ ' ' }}{{ a.time ? t('dash.afterCheckAt', { time: a.time, title: a.title }) : t('dash.afterCheck', { title: a.title }) }}</span>
         <i18n-t v-if="data.status.approvals" keypath="dash.draftsLine" tag="span" scope="global">
-          <template #drafts>{{ ' ' }}<NuxtLink :to="data.status.approvalId ? `${base}/freigaben/${data.status.approvalId}` : `${base}/freigaben`" class="strong-link">{{ t('dash.draftsWaiting', data.status.approvals) }}</NuxtLink></template>
+          <template #drafts>{{ ' ' }}<NuxtLink :to="data.status.approvalId ? `${base}/freigaben/${data.status.approvalId}` : `${base}/freigaben?abschnitt=dran`" class="strong-link">{{ t('dash.draftsWaiting', data.status.approvals) }}</NuxtLink></template>
         </i18n-t>
         <span v-if="data.status.approvedUntil && data.status.approvedUntil > data.today">{{ ' ' }}{{ t('dash.approvedUntil', { date: dayDm(data.status.approvedUntil) }) }}</span>
         <template v-if="data.status.overdue">{{ ' ' }}<NuxtLink :to="`${base}/aufgaben?scope=overdue`" class="late-link">{{ t('dash.overdueLine', data.status.overdue) }}</NuxtLink></template>

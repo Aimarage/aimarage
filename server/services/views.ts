@@ -268,8 +268,8 @@ export async function dashboardView(db: Db, ws: Workspace, project: Project | nu
   const approvals = draftRows.length
   const approvalId = approvals === 1 ? draftRows[0]!.view.draftId : null
   const until = await approvedUntil(db, ws, d, projects.map(p => p.id))
-  const claudeChecking = all.filter(r => r.view.next === 'claudeChecks' && !r.view.now && (!r.view.userId || r.view.userId === userId)).length
-  const later = minutes ? null : waitingLater(all.filter(r => !r.view.userId || r.view.userId === userId).map(r => r.view))
+  // Wie die Abschnitte "Kommt bald" und "Claude prüft" der Freigaben-Seite (dort ohne Filter nach Person).
+  const waiting = waitingLater(all.map(r => r.view))
   const afterCheck = mine.filter(r => r.view.then === 'post').map(r => ({ title: r.task.title, time: r.task.dueDate === d ? r.task.dueTime : null, min: r.view.min }))
 
   const feedWhere = and(eq(schema.activity.workspaceId, ws.id), or(inArray(schema.activity.actor, ['agent', 'mcp']), inArray(schema.activity.action, CLIENT_ACTIONS)), project ? eq(schema.activity.projectId, project.id) : projectCond(access, schema.activity.projectId))
@@ -286,7 +286,7 @@ export async function dashboardView(db: Db, ws: Workspace, project: Project | nu
     goalsTotal: goals.length,
     kpis,
     kpiDay: yesterday,
-    status: { approvals, approvalId, later, approvedUntil: until, overdue, minutes, afterCheck, claudeChecking, access: accessList, budget: budgetOf(ws.settings, userId), visitors, visitorsChange: pctChange(visitors, visitorsPrev) },
+    status: { approvals, approvalId, waiting, approvedUntil: until, overdue, minutes, afterCheck, access: accessList, budget: budgetOf(ws.settings, userId), visitors, visitorsChange: pctChange(visitors, visitorsPrev) },
     done,
     today_tasks: todayItems.sort((a, b) => Number(b.overdue) - Number(a.overdue) || `${a.dueDate ?? ''}${a.dueTime ?? ''}`.localeCompare(`${b.dueDate ?? ''}${b.dueTime ?? ''}`)),
     feed: feed.map(f => ({ id: f.id, at: f.createdAt.toISOString(), action: f.action, projectId: f.projectId, taskId: f.taskId, detail: f.detail })),
